@@ -1,103 +1,182 @@
-import Image from "next/image";
+'use client'
+import { IoIosArrowRoundForward } from "react-icons/io";
+import { FaOpencart } from "react-icons/fa6";
+import gsap from "gsap";
+import { useEffect, useRef } from "react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const leftside = useRef<HTMLDivElement>(null);
+  const rightside = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (!leftside.current || !rightside.current) return;
+
+    const images = gsap.utils.toArray<HTMLDivElement>(".img");
+
+    // Ensure all images except the first one are initially hidden below
+    gsap.set(images.slice(1), { yPercent: 101 });
+
+    // Create a GSAP timeline
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: leftside.current,
+        start: "top top",
+        end: "bottom bottom",
+        scrub: true,
+        pin: rightside.current,
+      },
+    });
+
+    // Stagger animation for each image
+    images.forEach((image, index) => {
+      if (index === 0) return; // Skip first image since it's already visible
+
+      tl.to(image, { yPercent: 0, duration: 1 }, `+=${index * 1.5}`);
+    });
+
+
+
+    if (!containerRef.current) return;
+
+    let sections = gsap.utils.toArray<HTMLElement>("section");
+
+    sections.forEach((section, i) => {
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top 50%",
+        end: "bottom 50%",
+        onEnter: () => {
+          const bgColor = section.dataset.bgcolor;
+          gsap.to(containerRef.current, { backgroundColor: bgColor, duration: 1 });
+        },
+        onLeaveBack: () => {
+          const prevSection = sections[i - 1] as HTMLElement;
+          const prevBgColor = prevSection ? prevSection.dataset.bgcolor : "#fff";
+          gsap.to(containerRef.current, { backgroundColor: prevBgColor, duration: 1 });
+        },
+      });
+    });
+
+    return () => ScrollTrigger.getAll().forEach((st) => st.kill());
+    
+
+
+  }, []);
+
+
+  return (
+    <div>
+      <main>
+      <div className="h-screen pt-[1.5rem] relative overflow-hidden">
+      <div id="hero" className="rounded-lg pt-[1rem] relative w-full h-full overflow-hidden">
+        {/* Navbar */}
+        <div id="hero-nav" className="flex justify-between h-[2rem] items-center absolute top-0 w-full z-10">
+          <div className="flex text-white font-inter gap-6 ml-[1rem]">
+            <a href="">SHOP</a>
+            <a href="">ABOUT US</a>
+          </div>
+
+          <div className="font-epilogue font-bold text-[#720D1C] text-[1.5rem]">PROWOOD</div>
+
+          <div className="flex text-white font-inter gap-6 mr-[1rem]">
+            <a href="">HOME</a>
+            <a href="">
+              <FaOpencart className="font-extrabold text-[1.5rem]" />
+            </a>
+          </div>
         </div>
+
+        {/* Description */}
+        <div id="hero-description" className="top-[60%] right-[3%] absolute flex flex-col w-[45%] text-right p-[0.3rem] z-10">
+          <span className="font-epilogue font-medium text-[3.4rem] tracking-widest text-[#8B0000]">
+            TIMELESS BEAUTY, MODERN DURABILITY.
+          </span>
+          <span className="font-inter text-[1.5rem]">Transform your space - Get in Touch!</span>
+          <div>
+            <button className="mt-[0.5rem] text-[1.3rem] border-2 p-[0.3rem] rounded-md">
+              Shop now <IoIosArrowRoundForward className="inline text-[1.5rem]" />
+            </button>
+          </div>
+        </div>
+
+        {/* Parallax Video */}
+        <video
+          ref={videoRef}
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute top-0 left-0 w-full h-full object-cover z-[-1]"
+        >
+          <source src="/video.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+
+
+        <div id="scroll-image" ref={containerRef} className=" flex">
+          <div ref={leftside} id="left" className="w-[50%] ml-[auto]">
+            <section data-bgcolor="#B57A76" className=" h-[100vh] flex flex-col text-left justify-center w-[49vh] mx-[auto]">
+              <p className="text-[2.8rem] text-[#720D1C] font-medium font-epilogue">
+                Modern Interior, High Class Durability
+              </p>
+              <p className=" text-[1.3rem] mt-[0.6rem] font-inter">
+                A stylish neutral tone that complements any interior.
+              </p>
+              <button className="w-[9rem] text-[#720D1C] mt-[1rem] text-[1.3rem] border-2 p-[0.3rem] rounded-md" >Our Work <IoIosArrowRoundForward className="inline text-[1.5rem]" /></button>
+            </section>
+            <section data-bgcolor="#8C87F6" className="h-[100vh] flex flex-col text-left justify-center w-[49vh] mx-[auto]">
+              <p className="text-[2.8rem] text-[#720D1C] font-medium font-epilogue">
+                Elegant But Low Maintenance
+              </p>
+              <p className="text-[1.3rem] mt-[0.6rem] font-inter">
+                Built to last with high moisture resistance and worry no more for termite problems!
+              </p>
+              <button className="w-[9rem] text-[#720D1C] mt-[1rem] text-[1.3rem] border-2 p-[0.3rem] rounded-md" >Our Work <IoIosArrowRoundForward className="inline text-[1.5rem]" /></button>
+            </section>
+            <section data-bgcolor="#F57CD3" className="h-[100vh] flex flex-col text-left justify-center w-[49vh] mx-[auto]">
+              <p className="text-[2.8rem] text-[#720D1C] font-medium font-epilogue">
+                Save Big on WPC Panels
+              </p>
+              <p className="text-[1.3rem] mt-[0.6rem] font-inter">
+                Lightweight panels for a hassle-free upgrade.
+              </p>
+              <button className="w-[9rem] text-[#720D1C] mt-[1rem] text-[1.3rem] border-2 p-[0.3rem] rounded-md" >Our Work <IoIosArrowRoundForward className="inline text-[1.5rem]" /></button>
+            </section>
+          </div>
+
+          <div ref={rightside} id="right" className="images w-[50%] mr-[auto] relative">
+            <div id="main" className="h-[100vh] relative">
+              <div className="mx-[auto] h-[70vh] left-[15%] top-[13%] overflow-hidden relative">
+                <div className="img w-[35vw] h-[70vh] bg-gradient-to-br from-[#B57A76] to-[#4F3533] flex flex-col justify-center rounded-3xl absolute">
+                  <div className="mx-[auto] w-[75%] h-[90%] shadow-2xl rounded-lg overflow-hidden">
+                    <img className="h-full w-full object-cover" src="/room.jpg" alt="image 1" />
+                  </div>
+                </div>
+                <div className="img w-[35vw] h-[70vh] bg-gradient-to-br from-[#8C87F6] to-[#000745] flex flex-col justify-center rounded-3xl absolute">
+                  <div className="mx-[auto] w-[75%] h-[90%] shadow-2xl rounded-lg overflow-hidden">
+                    <img className="h-full w-full object-cover" src="/office2.jpg" alt="image 2" />
+                  </div>
+                </div>
+                <div className="img w-[35vw] h-[70vh] bg-gradient-to-br from-[#F57CD3] to-[#8B147F] flex flex-col justify-center rounded-3xl absolute">
+                  <div className="mx-[auto] w-[75%] h-[90%] shadow-2xl rounded-lg overflow-hidden">
+                    <img className="h-full w-full object-cover" src="/wall2.jpg" alt="image 3" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      <footer></footer>
     </div>
   );
 }
