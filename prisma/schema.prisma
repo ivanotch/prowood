@@ -1,0 +1,122 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Enums
+enum PaymentStatus {
+  PAYED
+  INITIAL_DOWNPAYMENT
+  UNPAID
+}
+
+enum DeliveryStatus {
+  NOT_SHIPPED
+  PACKED
+  SHIPPED
+  DELIVERED
+  CANCELED
+}
+
+enum ModeOfPayment {
+  CASH
+  CREDIT_CARD
+  BANK_TRANSFER
+  GCASH
+  OTHER
+}
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+}
+
+// Customer Table
+model Customer {
+  customerId String @id @default(uuid())
+  name       String
+  contact    String
+  email      String @unique
+  password   String // Hashed password
+  address    String
+
+  orders Order[]
+  carts  Cart[]
+}
+
+// Admin Table
+model Admin {
+  adminId String @id @default(uuid())
+  name    String
+  contact String
+  email   String @unique
+  role    Role
+
+  approvedOrders Order[] @relation("OrderApprovedBy")
+}
+
+// Product Table
+model Product {
+  product_id   String  @id @default(uuid())
+  name         String
+  description  String
+  stock        Int
+  pricePerUnit Float
+  productImage String? // Optional
+  category     String? // Optional
+
+  carts      Cart[]
+  orderItems OrderItem[]
+}
+
+// Order Table
+model Order {
+  order_id   String  @id @default(uuid())
+  customerId String // Just a foreign key
+  approvedBy String? // Just a foreign key
+
+  address          String
+  paymentStatus    PaymentStatus
+  deliveryStatus   DeliveryStatus
+  deliveryDate     DateTime?
+  modeOfPayment    ModeOfPayment
+  accomplishedDate DateTime?
+
+  customer Customer @relation(fields: [customerId], references: [customerId])
+  admin    Admin?   @relation(fields: [approvedBy], references: [adminId], name: "OrderApprovedBy")
+
+  items OrderItem[]
+}
+
+// Order Items Table
+model OrderItem {
+  orderItemId String @id @default(uuid())
+  order_id    String
+  productId   String
+  quantity    Int
+
+  order   Order   @relation(fields: [order_id], references: [order_id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [product_id])
+}
+
+// Cart Table
+model Cart {
+  customerId String
+  productId  String
+  quantity   Int
+
+  customer Customer @relation(fields: [customerId], references: [customerId])
+  product  Product  @relation(fields: [productId], references: [product_id])
+
+  @@id([customerId, productId]) // Prevents duplicate cart entries
+}
