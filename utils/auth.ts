@@ -1,20 +1,20 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import jwt from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
 
-const SECRET_KEY = process.env.JWT_SECRET || 'your-secret-key';
+const SECRET_KEY = process.env.JWT_SECRET || "ivanpogi"; // Replace with a secure key
 
-export function authenticate(req: NextApiRequest, res: NextApiResponse, next: Function) {
-  const token = req.headers.authorization?.split(' ')[1]; // Extract Bearer token
-
-  if (!token) {
-    return res.status(401).json({ message: 'Unauthorized' });
+export async function authenticate(req: Request) {
+  // 🔹 Get the token from the Authorization header
+  const authHeader = req.headers.get("authorization");
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return null; // No token, return null (handle unauthorized in route)
   }
 
+  const token = authHeader.split(" ")[1];
+
   try {
-    const decoded = jwt.verify(token, SECRET_KEY);
-    (req as any).user = decoded; // Attach user info to request
-    next();
+    const decoded = jwt.verify(token, SECRET_KEY) as { userId: string };
+    return decoded; // Return the decoded user data
   } catch (error) {
-    return res.status(401).json({ message: 'Invalid or expired token' });
+    return null; // Invalid token, return null
   }
 }
