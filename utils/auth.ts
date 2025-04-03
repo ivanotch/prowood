@@ -27,7 +27,7 @@ export async function authenticateAdmin(req: Request) {
     const token = authHeader.split(' ')[1];
     if (!token) return null;
 
-    const decoded = jwt.verify(token, SECRET_KEY) as {userId: string; role: string};
+    const decoded = jwt.verify(token, SECRET_KEY) as {adminId: string; role: string};
 
     if (decoded.role !== "ADMIN" && decoded.role !== "SUPERADMIN") return null;
 
