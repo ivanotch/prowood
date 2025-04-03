@@ -61,6 +61,7 @@ model Admin {
   contact String
   email   String @unique
   role    Role
+  password String
 
   approvedOrders Order[] @relation("OrderApprovedBy")
 }

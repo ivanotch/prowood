@@ -14,6 +14,17 @@ async function main() {
       contact: "123456789",
       email: "admin@example.com",
       role: "SUPER_ADMIN",
+      password: hashedPassword
+    },
+  });
+
+  const admin2 = await prisma.admin.create({
+    data: {
+      name: "Ihahah hahaha",
+      contact: "123456789",
+      email: "admin2@example.com",
+      role: "ADMIN",
+      password: hashedPassword
     },
   });
 
