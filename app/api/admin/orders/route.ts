@@ -2,9 +2,9 @@ import { authenticateAdmin } from "@/utils/auth";
 import { NextResponse } from "next/server";
 import prisma from "@/utils/prisma";
 
-//get all orders
+//get all orders... working na
 export async function GET(req: Request) {
-    const admin = await authenticateAdmin(req);  // Check if admin is authenticated
+    const admin = await authenticateAdmin(req);
     if (!admin) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
@@ -12,8 +12,8 @@ export async function GET(req: Request) {
     try {
       const orders = await prisma.order.findMany({
         include: {
-          customer: { select: { name: true, email: true } }, // Include customer details
-          items: { include: { product: true } } // Include ordered products
+          customer: { select: { name: true, email: true } }, // Include customer details sa irereturn
+          items: { include: { product: true } } // Include ordered products sa irereturn
         }
       });
   
@@ -23,7 +23,7 @@ export async function GET(req: Request) {
     }
   }
 
-//create order
+//create order..... workin na
 export async function POST(req: Request) {
 
     try {
@@ -37,7 +37,7 @@ export async function POST(req: Request) {
             return NextResponse.json({ message: "Invalid request data" }, { status: 400 });
         }
 
-        // Validate product existence
+        // check kung nag eexist yung product
         const productIds = items.map((item: { productId: string }) => item.productId);
         const existingProducts = await prisma.product.findMany({
             where: { product_id: { in: productIds } },
