@@ -3,6 +3,8 @@ import { IoIosArrowRoundForward } from "react-icons/io";
 import { FaOpencart } from "react-icons/fa6";
 import { useEffect, useRef } from "react";
 import Image from 'next/image';
+import { RiArrowRightUpBoxFill } from "react-icons/ri";
+import { LiaCopyrightSolid } from "react-icons/lia";
 
 export default function Home() {
     return (
@@ -46,10 +48,10 @@ export default function Home() {
                     </div>
                 </div>
 
-                <div id="bestseller-ad" className="h-[80vh] px-6 py-12 bg-white">
+                <div id="bestseller-ad" className="h-[80vh] px-6 mb-[3rem] py-12 bg-white">
                     {/* Header */}
-                    <div className="flex justify-between items-center mb-8">
-                        <p className="text-3xl font-bold ml-4">Best Seller</p>
+                    <div className="flex justify-between items-center mb-[2rem] mt-[1rem]">
+                        <p className="text-3xl font-bold ml-4 text-[#720D1C]">Best Seller</p>
                         <a
                             href="#"
                             className="text-lg text-blue-600 hover:text-blue-800 transition-all duration-200 mr-4 flex items-center gap-1"
@@ -86,7 +88,7 @@ export default function Home() {
                 </div>
 
 
-                <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 grid-flow-row-dense p-4 grid-rows-[minmax(0,_10rem)]">
+                <div className="grid grid-cols-1 sm:grid-cols-4 gap-5 grid-flow-row-dense p-4 grid-rows-[minmax(0,_10rem)] mb-[3rem]">
                     <div className="group relative w-full h-full min-h-[10rem] rounded overflow-hidden col-span-2 row-span-2">
                         <Image
                             src="/business-proj.jpg"
@@ -156,10 +158,10 @@ export default function Home() {
                     </div>
                 </div>
 
-                <div id="indoor-ad" className="h-[80vh] px-6 py-12 bg-white">
+                <div id="indoor-ad" className="h-[80vh] px-6 py-12 bg-white mb-[2rem]">
                     {/* Header */}
-                    <div className="flex justify-between items-center mb-8">
-                        <p className="text-3xl font-bold ml-4">Indoor WPC</p>
+                    <div className="flex justify-between items-center mb-[3rem]">
+                        <p className="text-3xl font-bold ml-4 text-[#720D1C]">Indoor WPC</p>
                         <a
                             href="#"
                             className="text-lg text-blue-600 hover:text-blue-800 transition-all duration-200 mr-4 flex items-center gap-1"
@@ -195,7 +197,7 @@ export default function Home() {
                     </div>
                 </div>
 
-                <div id="indoor-ad" className="relative min-h-[50vh] w-[95%] mx-[auto] rounded overflow-hidden bg-black">
+                <div id="indoor-ad" className="relative min-h-[50vh] w-[95%] mx-[auto] mb-[3rem] rounded overflow-hidden bg-black">
                     <Image
                         src="/advertise.png"
                         alt="Ad Background"
@@ -204,10 +206,10 @@ export default function Home() {
                     />
                 </div>
 
-                <div id="outdoor-ad" className="h-[80vh] px-6 py-12 bg-white">
+                <div id="outdoor-ad" className="h-[80vh] px-6 py-12 bg-white mb-[3rem]">
                     {/* Header */}
                     <div className="flex justify-between items-center mb-8">
-                        <p className="text-3xl font-bold ml-4">Outdoor WPC</p>
+                        <p className="text-3xl font-bold ml-4 text-[#720D1C]">Outdoor WPC</p>
                         <a
                             href="#"
                             className="text-lg text-blue-600 hover:text-blue-800 transition-all duration-200 mr-4 flex items-center gap-1"
@@ -243,11 +245,47 @@ export default function Home() {
                     </div>
                 </div>
 
+                <div className="h-[14rem] bg-[#1a1e25] pt-[1.5rem] text-[#868c96] w-[80%] mx-[auto] rounded-[30px] text-center">
+                    <p className="text-white text-[2.5rem]">IS IT TIME TO ELEVATE YOUR HOME TO THE NEXT LEVEL?</p>
+                    <p className="text-[1.4rem]">Let’s elevate your home—get in touch and discover how we can make it happen.</p>
+                    <button className="mx-[auto] mt-[1rem] bg-[#720D1C] text-white rounded-[30px] p-[0.5rem] px-4 border-2 border-[#720D1C] flex items-center gap-2 transition-all duration-300 hover:bg-transparent hover:text-[#720D1C]">
+                        Reach out now!
+                        <RiArrowRightUpBoxFill className="text-[1.5rem] align-middle" />
+                    </button>
 
+                </div>
 
 
             </main>
-            <footer></footer>
+            <footer className="mt-[7rem] pt-[3rem] h-[35vh] text-[#868c96] bg-[#1a1e25] flex flex-col justify-between">
+                <div className="pl-[2.5rem] grid grid-cols-4">
+                    <div className="col-span-2">
+                        <hr className="border-t border-gray-300 my-4" />
+                        <ul>
+                            <li className="text-[2rem] text-[white] font-[700]">PROWOOD PH</li>
+                            <li className="text-[1.1rem]">Quezon City, Philippines.</li>
+                        </ul>
+                    </div>
+                    <div className="flex justify-around col-span-2">
+                        <ul className="flex flex-col gap-3">
+                            <li className="mb-[1rem]"><a href="">CONTACT</a></li>
+                            <li className="text-white"><a href="">FACEBOOK</a></li>
+                            <li className="text-white"><a href="">INSTAGRAM</a></li>
+                            <li className="text-white"><a href="">EMAIL</a></li>
+                        </ul>
+                        <ul className="flex flex-col gap-3">
+                            <li className="mb-[1rem]">APP</li>
+                            <li className="text-white"><a href="">HOME</a></li>
+                            <li className="text-white"><a href="">PRODUCTS</a></li>
+                        </ul>
+                        <ul className="mt-[3rem]">
+                            <li className="text-white"><a href="">ABOUT US</a></li>
+                        </ul>
+
+                    </div>
+                </div>
+                <p className="mx-[auto] flex items-center gap-2 mb-[1rem]">Prowood PH. All rights reserved <LiaCopyrightSolid className="align-middle" /> 2025.</p>
+            </footer>
         </div>
     );
 }
