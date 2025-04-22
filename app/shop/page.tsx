@@ -10,7 +10,7 @@ export default function Home() {
     return (
         <div>
             <main>
-                <div className="h-screen pt-[1.5rem]">
+                <div className="h-screen pt-[1rem]">
                     <div id="hero" className="rounded-lg pt-[1rem] relative w-full h-[100%] overflow-hidden">
                         <div id="hero-nav" className="flex justify-between h-[2rem] items-center">
                             <div className="flex text-white font-inter gap-6 ml-[1rem]">
@@ -28,8 +28,8 @@ export default function Home() {
                             </div>
                         </div>
 
-                        <div id="hero-description" className="top-[60%] right-[3%] absolute flex flex-col w-[45%] text-right p-[0.3rem] ">
-                            <span className="font-epilogue font-medium text-[3.4rem] tracking-widest text-[#8B0000]">TIMELESS BEAUTY, MODERN DURABILITY.</span>
+                        <div id="hero-description" className="top-[60%] right-[3%] absolute flex flex-col w-[50%] text-right p-[0.3rem] ">
+                            <span className="font-epilogue font-[600] text-[3.8rem] tracking-widest text-[#8B0000]">TIMELESS BEAUTY, MODERN DURABILITY.</span>
                             <span className="font-inter  text-[1.5rem]">Transform your space- Get in Touch!</span>
                             <div><button className="mt-[0.5rem] text-[1.3rem] border-2 p-[0.3rem] rounded-md" >Shop now <IoIosArrowRoundForward className="inline text-[1.5rem]" /></button></div>
                         </div>
@@ -89,70 +89,70 @@ export default function Home() {
 
 
                 <div className="grid grid-cols-1 sm:grid-cols-4 gap-5 grid-flow-row-dense p-4 grid-rows-[minmax(0,_10rem)] mb-[3rem]">
-                    <div className="group relative w-full h-full min-h-[10rem] rounded overflow-hidden col-span-2 row-span-2">
+                    <div className="text-center group relative w-full h-full min-h-[10rem] rounded overflow-hidden col-span-2 row-span-2">
                         <Image
                             src="/business-proj.jpg"
                             alt="Ad Background"
                             fill
                             className="object-cover"
                         />
-                        <span className="absolute inset-0 flex items-center justify-center text-white text-lg font-semibold z-10 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <span className="absolute inset-0 flex items-center justify-center text-white text-lg font-semibold z-10 bg-[#720D1C]/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             Engineered for Elegance. Built for Life.
                         </span>
                     </div>
 
-                    <div className="group relative w-full h-full min-h-[10rem] rounded overflow-hidden">
+                    <div className="text-center group relative w-full h-full min-h-[10rem] rounded overflow-hidden">
                         <Image src="/Ad.jpg" alt="Ad Background" fill className="object-cover" />
-                        <span className="absolute inset-0 flex items-center justify-center text-white text-lg font-semibold z-10 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <span className="absolute inset-0 flex items-center justify-center text-white text-lg font-semibold z-10 bg-[#720D1C]/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             ELEVATE YOUR HOME TO THE NEXT LEVEL
                         </span>
                     </div>
 
-                    <div className="group relative w-full h-full min-h-[10rem] rounded overflow-hidden">
+                    <div className="text-center group relative w-full h-full min-h-[10rem] rounded overflow-hidden">
                         <Image src="/wall.jpg" alt="Ad Background" fill className="object-cover" />
-                        <span className="absolute inset-0 flex items-center justify-center text-white text-lg font-semibold z-10 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <span className="absolute inset-0 flex items-center justify-center text-white text-lg font-semibold z-10 bg-[#720D1C]/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             Eco-Friendly. Durable. Beautiful. That’s SPC & WPC Living.
                         </span>
                     </div>
 
-                    <div className="group relative w-full h-full min-h-[10rem] rounded overflow-hidden col-span-2 row-span-2">
+                    <div className="text-center group relative w-full h-full min-h-[10rem] rounded overflow-hidden col-span-2 row-span-2">
                         <Image src="/building.jpg" alt="Ad Background" fill className="object-cover" />
-                        <span className="absolute inset-0 flex items-center justify-center text-white text-lg font-semibold z-10 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <span className="absolute inset-0 flex items-center justify-center text-white text-lg font-semibold z-10 bg-[#720D1C]/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             Flawless Installation. Effortless Maintenance.
                         </span>
                     </div>
 
-                    <div className="group relative w-full h-full min-h-[10rem] rounded overflow-hidden row-span-2">
+                    <div className="text-center group relative w-full h-full min-h-[10rem] rounded overflow-hidden row-span-2">
                         <Image src="/business.jpg" alt="Ad Background" fill className="object-cover" />
-                        <span className="absolute inset-0 flex items-center justify-center text-white text-lg font-semibold z-10 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <span className="absolute inset-0 flex items-center justify-center text-white text-lg font-semibold z-10 bg-[#720D1C]/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             Next-Level Surfaces That Last a Lifetime.
                         </span>
                     </div>
 
-                    <div className="group relative w-full h-full min-h-[10rem] rounded overflow-hidden">
+                    <div className="text-center group relative w-full h-full min-h-[10rem] rounded overflow-hidden">
                         <Image src="/livingroom.jpg" alt="Ad Background" fill className="object-cover" />
-                        <span className="absolute inset-0 flex items-center justify-center text-white text-lg font-semibold z-10 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <span className="absolute inset-0 flex items-center justify-center text-white text-lg font-semibold z-10 bg-[#720D1C]/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             Built to Endure. Designed to Impress.
                         </span>
                     </div>
 
-                    <div className="group relative w-full h-full min-h-[10rem] rounded overflow-hidden">
+                    <div className="text-center group relative w-full h-full min-h-[10rem] rounded overflow-hidden">
                         <Image src="/livingroom4.jpg" alt="Ad Background" fill className="object-cover" />
-                        <span className="absolute inset-0 flex items-center justify-center text-white text-lg font-semibold z-10 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <span className="absolute inset-0 flex items-center justify-center text-white text-lg font-semibold z-10 bg-[#720D1C]/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             Luxury You Can Stand On — SPC Flooring.”
                         </span>
                     </div>
 
-                    <div className="group relative w-full h-full min-h-[10rem] rounded overflow-hidden">
+                    <div className="text-center group relative w-full h-full min-h-[10rem] rounded overflow-hidden">
                         <Image src="/livingroom5.jpg" alt="Ad Background" fill className="object-cover" />
-                        <span className="absolute inset-0 flex items-center justify-center text-white text-lg font-semibold z-10 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <span className="absolute inset-0 flex items-center justify-center text-white text-lg font-semibold z-10 bg-[#720D1C]/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             The Reliable Choice for Pros Who Know Quality.
                         </span>
                     </div>
 
-                    <div className="group relative w-full h-full min-h-[10rem] rounded overflow-hidden">
+                    <div className="text-center group relative w-full h-full min-h-[10rem] rounded overflow-hidden">
                         <Image src="/office2.jpg" alt="Ad Background" fill className="object-cover" />
-                        <span className="absolute inset-0 flex items-center justify-center text-white text-lg font-semibold z-10 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <span className="absolute p-5 inset-0 flex items-center justify-center text-white text-lg font-semibold z-10 bg-[#720D1C]/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             Create Your Dream Space — Smarter, Stronger, Sleeker.
                         </span>
                     </div>
