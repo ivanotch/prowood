@@ -7,7 +7,9 @@ import { RiArrowRightUpBoxFill } from "react-icons/ri";
 import { LiaCopyrightSolid } from "react-icons/lia";
 
 export default function Home() {
+    
     return (
+
         <div>
             <main>
                 <div className="h-screen pt-[1rem]">

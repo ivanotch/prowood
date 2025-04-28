@@ -26,6 +26,7 @@ export async function POST(req: Request) {
             return NextResponse.json({ message: "Invalid Credentials." }, { status: 400 })
         }
 
+
         //if creds are correct, generate a token that expires in 1d this is used to save the user information sa header at maaaccseess anytime
         const token = jwt.sign({ userId: user.customerId, email: user.email }, SECRET_KEY, { expiresIn: '1d' });
 

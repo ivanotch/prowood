@@ -5,7 +5,7 @@ import { NextResponse } from 'next/server';
 export async function POST(req: Request) {
     const {name, email, password, contact, address} = await req.json();
 
-        if (!name || !email || !password || !contact || !address) {
+        if (!name || !email || !password) {
             return NextResponse.json({ message: "All fields are required" }, { status: 400 })
         }
 
@@ -21,7 +21,7 @@ export async function POST(req: Request) {
             const hashedPassword = await bcrypt.hash(password, 10);
 
             const newUser = await prisma.customer.create({
-                data: {name, email, password: hashedPassword, contact, address}
+                data: {name, email, password: hashedPassword}
             })
 
             return NextResponse.json({ message: "User Created", user: newUser}, { status: 200 })

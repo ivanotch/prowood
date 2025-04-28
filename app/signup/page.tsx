@@ -1,6 +1,56 @@
+'use client'
+
 import { IoReturnUpBackSharp } from "react-icons/io5";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Signup() {
+    const router = useRouter();
+
+    const [fn, setFn] = useState('');
+    const [ln, setLn] = useState("")
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("");
+    const [confirmPass, setConfirmPass] = useState("");
+
+    const [error, setError] = useState("none");
+
+
+    const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        console.log('Clock');
+
+        if (password !== confirmPass) {
+            setError("password do not match");
+            return
+        }
+
+        console.log(error);
+        try {
+            setError("");
+            const name = fn + " " + ln;
+
+            const res = await fetch("api/auth/register", {
+                method: "POST",
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({name, email, password})
+            })
+
+            if (!res.ok) {
+                const data = await res.json();
+                console.log(data.error);
+                console.log(data)
+                setError(data.error)
+            } else {
+                router.push('/login');
+            }
+
+        } catch(err) {
+            console.error("An unexpected error occurred haha:", error);
+        }
+
+    }
+
     return (
         <main className="flex h-[100vh] p-[1rem] ">
             <div className="w-[50%] bg-cover bg-center rounded-[20px]" style={{ backgroundImage: "url('/login.jpg')", backgroundSize: 'cover', backgroundPosition: 'center' }}>
@@ -22,7 +72,7 @@ export default function Signup() {
                 </div>
 
                 {/* Form Fields */}
-                <form className="flex flex-col w-[60%] items-center mx-[auto] gap-7">
+                <form onSubmit={handleSignup} className="flex flex-col w-[60%] items-center mx-[auto] gap-7">
                     {/* Email */}
                     <div className="flex justify-between w-full">
                         <div className="flex flex-col">
@@ -30,6 +80,7 @@ export default function Signup() {
                                 First Name
                             </label>
                             <input
+                                onChange={(e) => setFn(e.target.value)}
                                 type="text"
                                 name="fn"
                                 id="fn"
@@ -43,6 +94,7 @@ export default function Signup() {
                                 Last Name
                             </label>
                             <input
+                                onChange={(e) => setLn(e.target.value)}
                                 type="text"
                                 name="ln"
                                 id="ln"
@@ -58,6 +110,7 @@ export default function Signup() {
                             Email
                         </label>
                         <input
+                            onChange={(e) => setEmail(e.target.value)}
                             type="email"
                             name="email"
                             id="email"
@@ -74,6 +127,7 @@ export default function Signup() {
                                 Password
                             </label>
                             <input
+                                onChange={(e) => setPassword(e.target.value)}
                                 type="password"
                                 name="password"
                                 id="password"
@@ -83,17 +137,31 @@ export default function Signup() {
                             />
                         </div>
                         <div className="flex flex-col ">
-                            <label htmlFor="password" className="mb-1 text-sm font-medium text-gray-700">
+                            <label htmlFor="confirmPassword" className="mb-1 text-sm font-medium text-gray-700">
                                 Re-type Password
                             </label>
-                            <input
+                            {error == "password do not match"? 
+                                <input
+                                onChange={(e) => setConfirmPass(e.target.value)}
                                 type="password"
-                                name="password"
-                                id="password"
+                                name="confirmPassword"
+                                id="confirmPassword"
+                                className="p-3 border border-red-300 rounded-lg focus:outline-none focus:ring-3 focus:ring-blue-500"
+                                placeholder="••••••••"
+                                required
+                            />
+                            :
+                            
+                            <input
+                                onChange={(e) => setConfirmPass(e.target.value)}
+                                type="password"
+                                name="confirmPassword"
+                                id="confirmPassword"
                                 className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 placeholder="••••••••"
                                 required
                             />
+                            }
                         </div>
                     </div>
 

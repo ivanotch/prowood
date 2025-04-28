@@ -1,6 +1,36 @@
+'use client'
 import { IoReturnUpBackSharp } from "react-icons/io5";
+import { useState, useEffect } from "react";
+import { useRouter } from 'next/navigation';
 
+
+// prevent user from accessing login page if still logged in. ?
 export default function Login() {
+    const router = useRouter();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        try {
+            const res = await fetch("api/auth/login/", {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            })
+
+            if (!res.ok) {
+                const data = await res.json();
+                console.log(data.error);
+            } else {
+                console.log('workingg');
+                router.push('/shop/products');
+            }
+        } catch (error) {
+            console.error("An unexpected error occurred haha:", error);
+        }
+    }
+
     return (
         <main className="flex h-[100vh] p-[1rem] ">
             <div className="w-[50%] bg-cover bg-center rounded-[20px]" style={{ backgroundImage: "url('/login.jpg')", backgroundSize: 'cover', backgroundPosition: 'center' }}>
@@ -22,7 +52,7 @@ export default function Login() {
                 </div>
 
                 {/* Form Fields */}
-                <form className="flex flex-col w-[50%] items-center mx-[auto] gap-7">
+                <form onSubmit={handleLogin} className="flex flex-col w-[50%] items-center mx-[auto] gap-7">
                     {/* Email */}
                     <div className="flex flex-col w-full mb-[1rem]">
                         <label htmlFor="email" className="mb-1 text-sm font-medium text-gray-700">
@@ -34,6 +64,7 @@ export default function Login() {
                             id="email"
                             className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="you@example.com"
+                            onChange={(e) => setEmail(e.target.value)}
                             required
                         />
                     </div>
@@ -49,6 +80,7 @@ export default function Login() {
                             id="password"
                             className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="••••••••"
+                            onChange={(e) => setPassword(e.target.value)}
                             required
                         />
                     </div>
