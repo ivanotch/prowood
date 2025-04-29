@@ -5,11 +5,15 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --main: #720D1C;
+  --subMain: rgb(247, 148, 29);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-main: var(--main);
+  --color-subMain: var(--subMain);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -32,3 +36,5 @@ body {
 .font-epilogue {
   font-family: var(--font-epilogue);
 }
+
+

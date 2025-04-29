@@ -79,7 +79,7 @@ async function main() {
       description: "183 x 1220mm Premium Quality SPC Flooring. Water Resistant, Scratch Resistant, and Low Maintenance",
       stock: 80,
       pricePerUnit: 265.0,
-      productImage: "SPC-AG.jpg",
+      productImage: "/SPC-AG.jpg",
       category: "Stone Plastic Composite",
     },
   });
@@ -90,7 +90,7 @@ async function main() {
       description: "183 x 1220mm Premium Quality SPC Flooring. Water Resistant, Scratch Resistant, and Low Maintenance",
       stock: 80,
       pricePerUnit: 265.0,
-      productImage: "/SPC-G.jpg",
+      productImage: "/SPC-B.jpg",
       category: "Stone Plastic Composite",
     },
   });
@@ -217,7 +217,7 @@ async function main() {
       stock: 80,
       pricePerUnit: 800.0,
       productImage: "/COLUMN-B.jpg",
-      category: "Indoor Wood Plastic Composite Columns",
+      category: "Indoor Columns Wood Plastic Composite",
     },
   });
 
@@ -228,7 +228,7 @@ async function main() {
       stock: 80,
       pricePerUnit: 800.0,
       productImage: "/COLUMN-W.jpg",
-      category: "Indoor Wood Plastic Composite Columns",
+      category: "Indoor Columns Wood Plastic Composite",
     },
   });
 
@@ -239,7 +239,7 @@ async function main() {
       stock: 80,
       pricePerUnit: 800.0,
       productImage: "/COLUMN-DW.jpg",
-      category: "Indoor Wood Plastic Composite Columns",
+      category: "Indoor Columns Wood Plastic Composite",
     },
   });
 
@@ -250,7 +250,7 @@ async function main() {
       stock: 80,
       pricePerUnit: 800.0,
       productImage: "/COLUMN-WO.jpg",
-      category: "Indoor Wood Plastic Composite Columns",
+      category: "Indoor Columns Wood Plastic Composite",
     },
   });
 
@@ -261,7 +261,7 @@ async function main() {
       stock: 80,
       pricePerUnit: 800.0,
       productImage: "/COLUMN-G.jpg",
-      category: "Indoor Wood Plastic Composite Columns",
+      category: "Indoor Columns Wood Plastic Composite",
     },
   });
 
@@ -272,7 +272,7 @@ async function main() {
       stock: 80,
       pricePerUnit: 800.0,
       productImage: "/COLUMN-EO.jpg",
-      category: "Indoor Wood Plastic Composite Columns",
+      category: "Indoor Columns Wood Plastic Composite",
     },
   });
 
