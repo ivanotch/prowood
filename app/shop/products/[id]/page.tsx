@@ -1,6 +1,8 @@
 import Image from "next/image";
 import prisma from "@/utils/prisma";
 import Nav from "@/app/components/nav/Nav";
+import QuantityButton from "../QuantityButton";
+
 
 export default async function ProductDetails({ params }: { params: { id: String } }) {
 
@@ -22,11 +24,22 @@ export default async function ProductDetails({ params }: { params: { id: String 
                         className="object-cover rounded"
                     />
                 </div>
-                <div className="w-[60%] pl-6">
-                    <h1 className="text-2xl font-bold">{product.name}</h1>
-                    <p className="mt-2">Price: {product.pricePerUnit}</p>
+                <div className="w-[60%] pl-6 flex flex-col justify-between">
+                    <div className="flex flex-col">
+                        <div className="flex flex-col gap-2 mt-[3rem]">
+                            <h1 className="text-4xl font-bold">{product.name}</h1>
+                            <p className="text-xl">{product.category}</p>
+                        </div>
+
+                        <p className="mt-[1rem] text-[1.2rem]">{product.description}</p>
+
+                    </div>
+
+                    <div>
+                        <QuantityButton product={product} />
+                    </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }

@@ -55,7 +55,7 @@ export default function Home() {
                     <div className="flex justify-between items-center mb-[2rem] mt-[1rem]">
                         <p className="text-3xl font-bold ml-4 text-[#720D1C]">Best Seller</p>
                         <a
-                            href="#"
+                            href="/shop/products"
                             className="text-lg text-blue-600 hover:text-blue-800 transition-all duration-200 mr-4 flex items-center gap-1"
                         >
                             Explore the shop
@@ -165,7 +165,7 @@ export default function Home() {
                     <div className="flex justify-between items-center mb-[3rem]">
                         <p className="text-3xl font-bold ml-4 text-[#720D1C]">Indoor WPC</p>
                         <a
-                            href="#"
+                            href="/shop/products"
                             className="text-lg text-blue-600 hover:text-blue-800 transition-all duration-200 mr-4 flex items-center gap-1"
                         >
                             Explore the shop
@@ -213,7 +213,7 @@ export default function Home() {
                     <div className="flex justify-between items-center mb-8">
                         <p className="text-3xl font-bold ml-4 text-[#720D1C]">Outdoor WPC</p>
                         <a
-                            href="#"
+                            href="/shop/products"
                             className="text-lg text-blue-600 hover:text-blue-800 transition-all duration-200 mr-4 flex items-center gap-1"
                         >
                             Explore the shop
