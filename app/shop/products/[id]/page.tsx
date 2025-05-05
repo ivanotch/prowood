@@ -3,11 +3,12 @@ import prisma from "@/utils/prisma";
 import Nav from "@/app/components/nav/Nav";
 import QuantityButton from "../QuantityButton";
 
+export default async function ProductDetails({ params }: {params: Promise<{id: String}>}) {
 
-export default async function ProductDetails({ params }: { params: { id: String } }) {
+    const { id } = await params;
 
     const product = await prisma.product.findUnique({
-        where: { product_id: String(params.id) },
+        where: { product_id: String(id) },
     });
 
     if (!product) return <div>Product not found.</div>;

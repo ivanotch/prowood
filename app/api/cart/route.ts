@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { authenticate } from "@/utils/auth";
 
 export async function POST(req: Request) {
-    const user = await authenticate(req)
+    const user = await authenticate()
     if (!user) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 400 })
     }
@@ -67,7 +67,7 @@ export async function POST(req: Request) {
 }
 
 export async function GET(req: Request) {
-    const user = await authenticate(req);
+    const user = await authenticate();
     if (!user) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
     }
@@ -89,7 +89,7 @@ export async function GET(req: Request) {
 }
 
 export async function PATCH(req: Request) {
-    const user = await authenticate(req);
+    const user = await authenticate();
     if (!user) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
@@ -147,7 +147,7 @@ export async function PATCH(req: Request) {
 }
 
 export async function DELETE(req: Request) {
-    const user = await authenticate(req);
+    const user = await authenticate();
     if (!user) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 404 });
     }

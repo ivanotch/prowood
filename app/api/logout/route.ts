@@ -1,9 +1,16 @@
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 
 export async function POST() {
-  // 🔹 Clear the token by setting an expired cookie
-  const response = NextResponse.json({ message: "Logged out successfully" }, { status: 200 });
-  response.headers.set("Set-Cookie", "token=; Path=/; HttpOnly; Max-Age=0");
+  const cookieStore = await cookies(); // ✅ This is *synchronous* in route handlers
 
-  return response;
+  cookieStore.set("auth_token", "", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    maxAge: 0, // Expire immediately
+    path: "/"
+  });
+
+  return NextResponse.json({ message: "Logged out successfully" }, { status: 200 });
 }

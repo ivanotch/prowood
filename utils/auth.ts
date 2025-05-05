@@ -1,37 +1,37 @@
-import jwt from "jsonwebtoken";
+import { cookies } from 'next/headers';
+import jwt from 'jsonwebtoken';
 
-const SECRET_KEY = process.env.JWT_SECRET || "ivanpogi"; // Replace with a secure key
+const SECRET_KEY = process.env.JWT_SECRET || 'ivanpogi';
+const COOKIE_NAME = 'auth_token';
 
-export async function authenticate(req: Request) {
-  // 🔹 Get the token from the Authorization header
-  const authHeader = req.headers.get("authorization");
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return null; // No token, return null (handle unauthorized in route)
-  }
+export async function authenticate() {
+  const cookieStore = cookies();
+  const token =  (await cookieStore).get(COOKIE_NAME)?.value;
 
-  const token = authHeader.split(" ")[1];
+  if (!token) return null;
 
   try {
-    const decoded = jwt.verify(token, SECRET_KEY) as { userId: string };
-    return decoded; // Return the decoded user data
+    const decoded = jwt.verify(token, SECRET_KEY) as { userId: string; email: string; name: string };
+    return decoded;
   } catch (error) {
-    return null; // Invalid token, return null
+    return null;
   }
 }
 
-export async function authenticateAdmin(req: Request) {
+export async function authenticateAdmin() {
+  const cookieStore = cookies();
+  const token = (await cookieStore).get(COOKIE_NAME)?.value;
+
+  if (!token) return null;
+
   try {
-    const authHeader = req.headers.get('authorization');
-    if (!authHeader) return null;
+    const decoded = jwt.verify(token, SECRET_KEY) as { adminId?: string; role?: string };
+    
+    if (decoded.role === 'ADMIN' || decoded.role === 'SUPERADMIN') {
+      return decoded;
+    }
 
-    const token = authHeader.split(' ')[1];
-    if (!token) return null;
-
-    const decoded = jwt.verify(token, SECRET_KEY) as {adminId: string; role: string};
-
-    if (decoded.role !== "ADMIN" && decoded.role !== "SUPERADMIN") return null;
-
-    return decoded;
+    return null;
   } catch (error) {
     return null;
   }

@@ -24,7 +24,7 @@ export default function Login() {
                 console.log(data.error);
             } else {
                 console.log('workingg');
-                router.push('/shop/products');
+                router.push('/shop');
             }
         } catch (error) {
             console.error("An unexpected error occurred haha:", error);

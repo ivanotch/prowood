@@ -8,6 +8,7 @@ import Nav from "@/app/components/nav/Nav";
 export default function Products() {
 
     const [filter, setFilter] = useState("");
+
     interface Product {
         product_id: string;
         name: string;
@@ -18,6 +19,7 @@ export default function Products() {
         category: string;
 
     }
+    
 
     const [products, setProducts] = useState<{ products: Product[] }>({ products: [] })
 
