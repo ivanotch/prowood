@@ -13,31 +13,31 @@ import {
 } from "@/components/ui/popover"
 import Link from "next/link";
 
+interface User {
+    userId: string;
+    email: string;
+    name: string;
+}
+
+interface Product {
+    product_id: string;
+    name: string;
+    description: string;
+    stock: number;
+    pricePerUnit: number;
+    productImage: string | null;
+    category: string | null;
+}
+
+interface CartItem {
+    productId: string;
+    quantity: number;
+    customerId: string;
+    product: Product;
+}
+
 
 export default function Nav() {
-
-    interface User {
-        userId: string;
-        email: string;
-        name: string;
-    }
-
-    interface Product {
-        product_id: string;
-        name: string;
-        description: string;
-        stock: number;
-        pricePerUnit: number;
-        productImage: string | null;
-        category: string | null;
-    }
-
-    interface CartItem {
-        productId: string;
-        quantity: number;
-        customerId: string;
-        product: Product;
-    }
 
     const [user, setUser] = useState<User | null>(null);
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -85,10 +85,10 @@ export default function Nav() {
                                         <Image src={String(item.product.productImage)} alt="Product Image"
                                             width={50}
                                             height={50}
-                                            className="w-full object-cover rounded"
+                                            className="object-cover rounded"
                                         />
                                         <div className="flex flex-col">
-                                            <p className="text-lg font-bold">{item.product.name}</p>
+                                            <p className="text-lg font-bold">{item.product.name.length > 20 ? `${item.product.name.slice(0, 20)}...` : item.product.name}</p>
                                             <p>{item.product.category}</p>
                                         </div>
                                         <p><span className="text-[1.3rem]">₱</span>{item.product.pricePerUnit}</p>

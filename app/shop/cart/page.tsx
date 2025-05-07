@@ -1,8 +1,22 @@
+import prisma from "@/utils/prisma"
 import CartTable from "./CartTable"
+import getUserFromServer from '../../../utils/authServer'
 
 
-export default function Cart() {
+export default async function Cart() {
+
+    const user = await getUserFromServer();
     
+    const cartProduct = await prisma.cart.findMany({
+        where: {
+            customerId: user?.userId
+        },
+        include: {
+            product: true
+        }
+    })
+
+    // console.log(cartProduct)
 
     return (
         <div className="pt-[1rem]">
@@ -25,7 +39,7 @@ export default function Cart() {
                     <p className="text-[1.4rem] font-bold">Start Upgrading Your Home!</p>
                     <p className="text-[1.1rem]">Here's your cart list.</p>
                 </div>
-                <CartTable />
+                <CartTable cartProduct={cartProduct} />
             </div>
         </div>
     )
