@@ -62,7 +62,7 @@ export default function Nav() {
     }, []);
 
     return (
-        <div id="hero-nav" className="flex justify-between h-[3.8rem] items-center bg-[#1a1e25]">
+        <div id="hero-nav" className="flex justify-between h-[3.8rem] rounded-md items-center bg-[#1a1e25]">
             <div className="flex text-white font-inter gap-6 ml-[1rem]">
                 <a href="/shop" className="text-[1.2rem]">HOME</a>
             </div>
@@ -85,7 +85,7 @@ export default function Nav() {
                                         <Image src={String(item.product.productImage)} alt="Product Image"
                                             width={50}
                                             height={50}
-                                            className="w-ful object-cover rounded"
+                                            className="w-full object-cover rounded"
                                         />
                                         <div className="flex flex-col">
                                             <p className="text-lg font-bold">{item.product.name}</p>
@@ -98,7 +98,7 @@ export default function Nav() {
                         )}
 
                         {user == null && (
-                            <div className="my-[2rem] text-[1.5rem]">No Cart Items.</div>
+                            <div className="my-[2rem] text-[1.2rem]">No Cart Items.</div>
                         )}
 
                         <Link href="/shop/cart" className="py-2 px-6 border-[2px] text-main border-main font-600 rounded-lg"> View Cart </Link>
