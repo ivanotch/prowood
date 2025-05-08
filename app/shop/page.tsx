@@ -73,8 +73,7 @@ export default function Home() {
 
                             <div className="flex text-white font-inter gap-6 mr-[1rem]">
                                 <a href="/shop/products">Products</a>
-                                {user !== null ?
-
+                                {user &&
                                     <Popover>
                                         <PopoverTrigger asChild>
                                             <Avatar>
@@ -87,11 +86,18 @@ export default function Home() {
                                         <PopoverContent className="w-50 text-center flex flex-col gap-3">
                                             <a href="/shop/cart" className="border-b-3 border-slate-400 p-1">View Cart</a>
                                             <a href="/shop/products" className="border-b-3 border-slate-400 p-1">Shop</a>
-                                            <button onClick={handleLogout}  className="rounded-md p-1 bg-red-800 font-bold text-white">Log out</button>
+                                            <button onClick={handleLogout} className="rounded-md p-1 bg-red-800 font-bold text-white">Log out</button>
                                         </PopoverContent>
                                     </Popover>
-                                    :
-                                    <a href="/login" className="border border-[#F7941D] border-2 text-[#F7941D] p-1 font-bold">Login</a>
+                                }
+
+                                {user === null &&
+                                    <a
+                                        href="/login"
+                                        className="border-2 border-[#F7941D] text-[#F7941D] p-1 font-bold hover:bg-[#F7941D] hover:text-white transition-colors duration-200"
+                                    >
+                                        Login
+                                    </a>
                                 }
 
                             </div>
@@ -131,11 +137,11 @@ export default function Home() {
                     </div>
 
                     {/* Product Cards */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-3 w-[100%] gap-5">
                         {[1, 2, 3].map((_, index) => (
                             <div
                                 key={index}
-                                className="bg-gray-100 p-4 rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col items-center"
+                                className="bg-gray-100 p-4 rounded-2xl mx-[auto] shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col items-center"
                             >
                                 <Image
                                     src="/SPC-W.jpg"
@@ -147,7 +153,7 @@ export default function Home() {
                                 <div className="mt-4 w-full text-center">
                                     <p className="text-lg font-semibold">SPC Walnut</p>
                                     <p className="text-gray-600 text-md mt-1">$99</p>
-                                    <button className="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                                    <button className="mt-4 w-full bg-main text-white py-2 rounded-lg hover:bg-transparent hover:text-main hover:border-2 hover:border-main transition-colors duration-200">
                                         Add to Cart
                                     </button>
                                 </div>
@@ -241,11 +247,11 @@ export default function Home() {
                     </div>
 
                     {/* Product Cards */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-3 w-[100%] gap-5">
                         {[1, 2, 3].map((_, index) => (
                             <div
                                 key={index}
-                                className="bg-gray-100 p-4 rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col items-center"
+                                className="bg-gray-100 p-2 rounded-2xl mx-[auto] w-[20rem] shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col items-center"
                             >
                                 <Image
                                     src="/SPC-W.jpg"
@@ -257,7 +263,7 @@ export default function Home() {
                                 <div className="mt-4 w-full text-center">
                                     <p className="text-lg font-semibold">SPC Walnut</p>
                                     <p className="text-gray-600 text-md mt-1">$99</p>
-                                    <button className="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                                    <button className="mt-4 w-full bg-main text-white py-2 rounded-lg hover:bg-transparent hover:text-main hover:border-2 hover:border-main transition-colors duration-200">
                                         Add to Cart
                                     </button>
                                 </div>
@@ -266,7 +272,7 @@ export default function Home() {
                     </div>
                 </div>
 
-                <div id="indoor-ad" className="relative min-h-[50vh] w-[95%] mx-[auto] mb-[3rem] rounded overflow-hidden bg-black">
+                <div id="indoor-ad" className="relative mt-[1rem] min-h-[50vh] w-[95%] mx-[auto] mb-[3rem] rounded overflow-hidden bg-black">
                     <Image
                         src="/advertise.png"
                         alt="Ad Background"
@@ -289,11 +295,11 @@ export default function Home() {
                     </div>
 
                     {/* Product Cards */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-3 w-[100%] gap-5">
                         {[1, 2, 3].map((_, index) => (
                             <div
                                 key={index}
-                                className="bg-gray-100 p-4 rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col items-center"
+                                className="mx-[auto] bg-gray-100 p-4 rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col items-center"
                             >
                                 <Image
                                     src="/SPC-W.jpg"
@@ -305,7 +311,7 @@ export default function Home() {
                                 <div className="mt-4 w-full text-center">
                                     <p className="text-lg font-semibold">SPC Walnut</p>
                                     <p className="text-gray-600 text-md mt-1">$99</p>
-                                    <button className="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                                    <button className="mt-4 w-full bg-main text-white py-2 rounded-lg hover:bg-transparent hover:text-main hover:border-2 hover:border-main transition-colors duration-200">
                                         Add to Cart
                                     </button>
                                 </div>
@@ -317,7 +323,7 @@ export default function Home() {
                 <div className="h-[14rem] bg-[#1a1e25] pt-[1.5rem] text-[#868c96] w-[80%] mx-[auto] rounded-[30px] text-center">
                     <p className="text-white text-[2.5rem]">IS IT TIME TO ELEVATE YOUR HOME TO THE NEXT LEVEL?</p>
                     <p className="text-[1.4rem]">Let’s elevate your home—get in touch and discover how we can make it happen.</p>
-                    <a href="https://www.facebook.com/prowoodph/" className="mx-[auto] mt-[1rem] bg-[#720D1C] text-white rounded-[30px] p-[0.5rem] px-4 border-2 border-[#720D1C] flex items-center gap-2 transition-all duration-300 hover:bg-transparent hover:text-[#720D1C]">
+                    <a href="https://www.facebook.com/prowoodph/" className="w-[11.5rem] mx-[auto] mt-[1rem] bg-[#720D1C] text-white rounded-[30px] p-[0.5rem] px-4 border-2 border-[#720D1C] flex items-center gap-2 transition-all duration-300 hover:bg-transparent hover:text-[#720D1C]">
                         Reach out now!
                         <RiArrowRightUpBoxFill className="text-[1.5rem] align-middle" />
                     </a>

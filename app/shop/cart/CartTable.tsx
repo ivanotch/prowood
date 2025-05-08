@@ -55,7 +55,7 @@ export default function CartTable({ cartProduct }: CartTableProps) {
             </TableHeader>
             <TableBody>
                 {cartProduct.map((product, index) => (
-                    <TableRow>
+                    <TableRow key={index}>
                         <TableCell className="text-center">
                             <input
                                 className="w-[19px] h-[19px] accent-main"
