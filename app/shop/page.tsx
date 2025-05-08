@@ -1,13 +1,60 @@
 'use client'
 import { IoIosArrowRoundForward } from "react-icons/io";
 import { FaOpencart } from "react-icons/fa6";
-import { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 import Image from 'next/image';
+import { useRouter } from "next/navigation";
 import { RiArrowRightUpBoxFill } from "react-icons/ri";
 import { LiaCopyrightSolid } from "react-icons/lia";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
 
 export default function Home() {
-    
+
+    const router = useRouter();
+    const [user, setUser] = useState<{ email: string, name: string } | null>(null);
+
+    useEffect(() => {
+        const checkUser = async () => {
+            try {
+                const res = await fetch('/api/user', {
+                    method: 'GET',
+                    credentials: "same-origin",
+                })
+
+                if (res.ok) {
+                    const data = await res.json();
+                    setUser(data.user);
+                } else {
+                    setUser(null)
+                }
+            } catch (err) {
+                console.error("error fetching user", err);
+                setUser(null);
+            }
+        }
+
+        checkUser();
+    }, [])
+
+    const handleLogout = async () => {
+        const res = await fetch("/api/logout/", {
+            method: 'POST',
+        })
+
+        if (res.ok) {
+            window.location.href = '/shop';
+        } else {
+            console.error("logout failed")
+        }
+    }
+
+    console.log(user)
+
     return (
 
         <div>
@@ -16,7 +63,7 @@ export default function Home() {
                     <div id="hero" className="rounded-lg pt-[1rem] relative w-full h-[100%] overflow-hidden">
                         <div id="hero-nav" className="flex justify-between h-[2rem] items-center">
                             <div className="flex text-white font-inter gap-6 ml-[1rem]">
-                                <a href="">SHOP</a>
+                                <a href="/">HOME</a>
                                 <a href="">ABOUT US</a>
                             </div>
 
@@ -25,15 +72,35 @@ export default function Home() {
                             </div>
 
                             <div className="flex text-white font-inter gap-6 mr-[1rem]">
-                                <a href="">HOME</a>
-                                <a href=""><FaOpencart className="font-extrabold text-[1.5rem]" /></a>
+                                <a href="/shop/products">Products</a>
+                                {user !== null ?
+
+                                    <Popover>
+                                        <PopoverTrigger asChild>
+                                            <Avatar>
+                                                <AvatarImage />
+                                                <AvatarFallback className="text-black">
+                                                    {user?.name?.split(" ").map(w => w[0]).join("").toUpperCase()}
+                                                </AvatarFallback>
+                                            </Avatar>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-50 text-center flex flex-col gap-3">
+                                            <a href="/shop/cart" className="border-b-3 border-slate-400 p-1">View Cart</a>
+                                            <a href="/shop/products" className="border-b-3 border-slate-400 p-1">Shop</a>
+                                            <button onClick={handleLogout}  className="rounded-md p-1 bg-red-800 font-bold text-white">Log out</button>
+                                        </PopoverContent>
+                                    </Popover>
+                                    :
+                                    <a href="/login" className="border border-[#F7941D] border-2 text-[#F7941D] p-1 font-bold">Login</a>
+                                }
+
                             </div>
                         </div>
 
                         <div id="hero-description" className="top-[60%] right-[3%] absolute flex flex-col w-[50%] text-right p-[0.3rem] ">
-                            <span className="font-epilogue font-[600] text-[3.8rem] tracking-widest text-[#8B0000]">TIMELESS BEAUTY, MODERN DURABILITY.</span>
-                            <span className="font-inter  text-[1.5rem]">Transform your space- Get in Touch!</span>
-                            <div><button className="mt-[0.5rem] text-[1.3rem] border-2 p-[0.3rem] rounded-md" >Shop now <IoIosArrowRoundForward className="inline text-[1.5rem]" /></button></div>
+                            <span className="font-epilogue font-[600] text-[3.5rem] tracking-widest text-[#8B0000]">TIMELESS BEAUTY, MODERN DURABILITY.</span>
+                            <span className="font-inter mb-[0.7rem] text-[1.5rem]">Transform your space- Get in Touch!</span>
+                            <div><a href="/shop/products" className="mt-[0.5rem] text-[1.3rem] border-2 border-main p-[0.3rem] font-bold text-main rounded-md" >Shop now <IoIosArrowRoundForward className="inline text-[1.5rem]" /></a></div>
                         </div>
 
                         <video
@@ -250,10 +317,10 @@ export default function Home() {
                 <div className="h-[14rem] bg-[#1a1e25] pt-[1.5rem] text-[#868c96] w-[80%] mx-[auto] rounded-[30px] text-center">
                     <p className="text-white text-[2.5rem]">IS IT TIME TO ELEVATE YOUR HOME TO THE NEXT LEVEL?</p>
                     <p className="text-[1.4rem]">Let’s elevate your home—get in touch and discover how we can make it happen.</p>
-                    <button className="mx-[auto] mt-[1rem] bg-[#720D1C] text-white rounded-[30px] p-[0.5rem] px-4 border-2 border-[#720D1C] flex items-center gap-2 transition-all duration-300 hover:bg-transparent hover:text-[#720D1C]">
+                    <a href="https://www.facebook.com/prowoodph/" className="mx-[auto] mt-[1rem] bg-[#720D1C] text-white rounded-[30px] p-[0.5rem] px-4 border-2 border-[#720D1C] flex items-center gap-2 transition-all duration-300 hover:bg-transparent hover:text-[#720D1C]">
                         Reach out now!
                         <RiArrowRightUpBoxFill className="text-[1.5rem] align-middle" />
-                    </button>
+                    </a>
 
                 </div>
 
@@ -271,7 +338,7 @@ export default function Home() {
                     <div className="flex justify-around col-span-2">
                         <ul className="flex flex-col gap-3">
                             <li className="mb-[1rem]"><a href="">CONTACT</a></li>
-                            <li className="text-white"><a href="">FACEBOOK</a></li>
+                            <li className="text-white"><a href="https://www.facebook.com/prowoodph/">FACEBOOK</a></li>
                             <li className="text-white"><a href="">INSTAGRAM</a></li>
                             <li className="text-white"><a href="">EMAIL</a></li>
                         </ul>

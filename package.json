@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@prisma/client": "^6.5.0",
+    "@radix-ui/react-avatar": "^1.1.9",
     "@radix-ui/react-popover": "^1.1.11",
     "@types/jsonwebtoken": "^9.0.9",
     "bcrypt": "^5.1.1",
