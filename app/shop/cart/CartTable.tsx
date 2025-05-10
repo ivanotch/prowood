@@ -34,6 +34,67 @@ export default function CartTable({ cartProduct }: CartTableProps) {
     console.log(cartProduct)
 
     const [quantity, setQuantity] = useState(1);
+    const [cartItems, setCartItems] = useState(cartProduct);
+
+
+    const [selectedItems, setSelectedItems] = useState<string[]>([]);
+
+    const isAllSelected = selectedItems.length === cartProduct.length;
+
+    const handleDelete = async ({ productId }: { productId: string }) => {
+        try {
+            const res = await fetch(`/api/cart?productId=${productId}`, {
+                method: 'DELETE',
+            });
+
+            if (res.ok) {
+                console.log("deleted successfully");
+            } else {
+                console.log("unsuccessful");
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const toggleSelectAll = () => {
+        if (isAllSelected) {
+            setSelectedItems([]);
+        } else {
+            setSelectedItems(cartProduct.map(item => item.productId));
+        }
+    };
+
+    const toggleSelectOne = (productId: string) => {
+        setSelectedItems(prev =>
+            prev.includes(productId)
+                ? prev.filter(id => id !== productId)
+                : [...prev, productId]
+        );
+    };
+
+    const updateQuantity = async (productId: string, newQty: number) => {
+        try {
+            const res = await fetch('/api/cart', {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ productId, quantity: newQty }),
+            });
+
+            if (!res.ok) {
+                throw new Error('Failed to update quantity');
+            }
+
+            // Update UI after success
+            setCartItems(prev =>
+                prev.map(item =>
+                    item.productId === productId ? { ...item, quantity: newQty } : item
+                )
+            );
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     return (
         <Table className="border-2 rounded-lg">
@@ -44,6 +105,8 @@ export default function CartTable({ cartProduct }: CartTableProps) {
                         <input
                             className="w-[19px] h-[19px] accent-main"
                             type="checkbox"
+                            checked={isAllSelected}
+                            onChange={toggleSelectAll}
                         />
                     </TableHead>
                     <TableHead className="text-[1.1rem]">Product</TableHead>
@@ -54,12 +117,14 @@ export default function CartTable({ cartProduct }: CartTableProps) {
                 </TableRow>
             </TableHeader>
             <TableBody>
-                {cartProduct.map((product, index) => (
+                {cartItems.map((product, index) => (
                     <TableRow key={index}>
                         <TableCell className="text-center">
                             <input
                                 className="w-[19px] h-[19px] accent-main"
                                 type="checkbox"
+                                checked={selectedItems.includes(product.productId)}
+                                onChange={() => toggleSelectOne(product.productId)}
                             />
                         </TableCell>
 
@@ -78,13 +143,19 @@ export default function CartTable({ cartProduct }: CartTableProps) {
 
                         <TableCell className="text-center">
                             <div className="flex items-center">
-                                <button className="border-2 px-2" onClick={() => setQuantity(q => Math.max(1, q - 1))}>-</button>
-                                <span className="border-2 px-2">{quantity}</span>
-                                <button className="border-2 px-2" onClick={() => setQuantity(q => Math.min(80, q + 1))}>+</button>
+                                <button className="border-2 px-2" onClick={() =>
+                                    updateQuantity(product.productId, Math.max(1, product.quantity - 1))
+                                }>-</button>
+                                <span className="border-2 px-2">{product.quantity}</span>
+                                <button className="border-2 px-2" onClick={() =>
+                                    updateQuantity(product.productId, Math.min(product.product.stock, product.quantity + 1))
+                                }>+</button>
                             </div>
                         </TableCell>
-                        <TableCell className=""><span className="text-[1.3rem]">₱</span>{product.product.pricePerUnit * quantity}</TableCell>
-                        <TableCell className="text-right text-main text-[1.05rem]">Delete</TableCell>
+                        <TableCell className=""><span className="text-[1.3rem]">₱</span>{product.product.pricePerUnit * product.quantity}</TableCell>
+                        <TableCell className="text-right text-main text-[1.05rem]">
+                            <button onClick={() => handleDelete({ productId: product.productId })}>Delete</button>
+                        </TableCell>
                     </TableRow>
                 ))}
             </TableBody>

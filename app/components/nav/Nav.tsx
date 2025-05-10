@@ -3,13 +3,13 @@
 import { FaOpencart } from "react-icons/fa6";
 import { useState, useEffect } from "react";
 import Image from 'next/image';
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
 import Link from "next/link";
+import AvatarProfile from "../avatar/Avatar";
 
 interface User {
     userId: string;
@@ -82,22 +82,7 @@ export default function Nav() {
             </div>
 
             <div className="flex text-white font-inter gap-6 mr-[1rem]">
-                {user != null && 
-                <Popover>
-                    <PopoverTrigger asChild>
-                        <Avatar>
-                            <AvatarImage />
-                            <AvatarFallback className="text-black">
-                                {user?.name?.split(" ").map(w => w[0]).join("").toUpperCase()}
-                            </AvatarFallback>
-                        </Avatar>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-50 text-center flex flex-col gap-3">
-                        <a href="/shop" className="border-b-3 border-slate-400 p-1">Home</a>
-                        <a href="/shop/cart" className="border-b-3 border-slate-400 p-1">View Cart</a>
-                        <button onClick={handleLogout} className="rounded-md p-1 bg-red-800 font-bold text-white">Log out</button>
-                    </PopoverContent>
-                </Popover>}
+                {user != null && <AvatarProfile />}
 
                 <Popover>
                     <PopoverTrigger asChild>

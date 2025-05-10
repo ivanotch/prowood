@@ -1,12 +1,13 @@
 import prisma from "@/utils/prisma"
 import CartTable from "./CartTable"
 import getUserFromServer from '../../../utils/authServer'
+import AvatarProfile from "@/app/components/avatar/Avatar"
 
 
 export default async function Cart() {
 
     const user = await getUserFromServer();
-    
+
     const cartProduct = await prisma.cart.findMany({
         where: {
             customerId: user?.userId
@@ -15,8 +16,6 @@ export default async function Cart() {
             product: true
         }
     })
-
-    // console.log(cartProduct)
 
     return (
         <div className="pt-[1rem]">
@@ -30,7 +29,7 @@ export default async function Cart() {
                 </div>
 
                 <div className="flex text-white font-inter gap-6 mr-[1rem]">
-                    Avatar
+                    {user != null && <AvatarProfile />}
                 </div>
             </div>
 
