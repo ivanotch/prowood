@@ -1,7 +1,9 @@
+
 import prisma from "@/utils/prisma"
 import CartTable from "./CartTable"
 import getUserFromServer from '../../../utils/authServer'
 import AvatarProfile from "@/app/components/avatar/Avatar"
+import CartClient from "./CartClient";
 
 
 export default async function Cart() {
@@ -33,13 +35,8 @@ export default async function Cart() {
                 </div>
             </div>
 
-            <div className="mt-[1rem] w-[90%] mx-[auto] border border-gray-400 rounded-md p-5">
-                <div className="mb-[2rem]">
-                    <p className="text-[1.4rem] font-bold">Start Upgrading Your Home!</p>
-                    <p className="text-[1.1rem]">Here's your cart list.</p>
-                </div>
-                <CartTable cartProduct={cartProduct} />
-            </div>
+            <CartClient cartProduct={cartProduct} />
+
         </div>
     )
 }

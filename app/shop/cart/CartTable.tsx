@@ -10,34 +10,35 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import Image from "next/image"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
+type CartItem = {
+    product: {
+        name: string;
+        product_id: string;
+        description: string;
+        stock: number;
+        pricePerUnit: number;
+        productImage: string | null;
+        category: string | null;
+    };
+    quantity: number;
+    customerId: string;
+    productId: string;
+};
 
 interface CartTableProps {
-    cartProduct: {
-        product: {
-            name: string;
-            product_id: string;
-            description: string;
-            stock: number;
-            pricePerUnit: number;
-            productImage: string | null;
-            category: string | null;
-        };
-        quantity: number;
-        customerId: string;
-        productId: string;
-    }[];
+    cartProduct: CartItem[];
+    selectedItems: string[];
+    setSelectedItems: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-export default function CartTable({ cartProduct }: CartTableProps) {
-    console.log(cartProduct)
+export default function CartTable({ cartProduct, selectedItems, setSelectedItems }: CartTableProps) {
 
-    const [quantity, setQuantity] = useState(1);
-    const [cartItems, setCartItems] = useState(cartProduct);
-
-
-    const [selectedItems, setSelectedItems] = useState<string[]>([]);
+    const [cartItems, setCartItems] = useState<CartItem[]>([]);
+    useEffect(() => {
+        setCartItems(cartProduct);
+    }, [cartProduct]);
 
     const isAllSelected = selectedItems.length === cartProduct.length;
 
@@ -97,6 +98,7 @@ export default function CartTable({ cartProduct }: CartTableProps) {
     };
 
     return (
+
         <Table className="border-2 rounded-lg">
             <TableCaption>A list of your Cart.</TableCaption>
             <TableHeader>
@@ -117,6 +119,9 @@ export default function CartTable({ cartProduct }: CartTableProps) {
                 </TableRow>
             </TableHeader>
             <TableBody>
+                {/* {cartItems.length === 0 && (
+                    <p className="text-center py-4 text-gray-500">Your cart is empty.</p>
+                )} */}
                 {cartItems.map((product, index) => (
                     <TableRow key={index}>
                         <TableCell className="text-center">

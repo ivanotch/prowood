@@ -1,20 +1,47 @@
 'use client'
 
-import { Product } from "@prisma/client";
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { FaOpencart } from "react-icons/fa6";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { Button } from "@/components/ui/button"
+import Link from "next/link";
+
+
+interface User {
+    userId: String;
+    name: String;
+    email: String;
+}
 
 export default function QuantityButton({ product }: { product: any }) {
 
+    const [user, setUser] = useState<User | null>(null);
     const [quantity, setQuantity] = useState(1);
 
-    const addToCart = async ({productId, quantity}: {productId: string, quantity: number}) => {
+
+    useEffect(() => {
+        fetch('/api/user')
+            .then(res => res.json())
+            .then(data => setUser(data.user));
+
+    }, [])
+
+    const addToCart = async ({ productId, quantity }: { productId: string, quantity: number }) => {
 
         try {
             const res = await fetch('/api/cart', {
                 method: 'POST',
-                headers: {'Content-type': 'application/json'},
-                body: JSON.stringify({productId, quantity})
+                headers: { 'Content-type': 'application/json' },
+                body: JSON.stringify({ productId, quantity })
             })
 
             if (!res.ok) {
@@ -23,7 +50,10 @@ export default function QuantityButton({ product }: { product: any }) {
         } catch (error) {
             console.error("An unexpected error occurred haha:", error);
         }
+    }
 
+    const handleBuy = async () => {
+        
     }
 
     return (
@@ -45,11 +75,30 @@ export default function QuantityButton({ product }: { product: any }) {
             </div>
 
             <div className="flex gap-2 mb-[2.6rem]">
-                <button className="p-1 w-[60%] text-white bg-main">Buy</button>
+                <Button className="p-1 w-[60%] text-white bg-main">Buy</Button>
+                
+                {user && (
+                    <Button onClick={() => addToCart({ productId: product.product_id, quantity })} className="p-1 w-[40%] border-2 text-subMain border-subMain flex items-center justify-center" variant="outline"><FaOpencart className="text-[2rem]" /></Button>
 
-                <button onClick={() => addToCart({ productId: product.product_id, quantity })}  className="p-1 w-[40%] border-2 text-subMain border-subMain flex items-center justify-center">
-                    <FaOpencart className="text-[2rem]" />
-                </button>
+                )}
+
+                {!user && (
+                    <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                            <Button className="p-1 w-[40%] border-2 text-subMain border-subMain flex items-center justify-center" variant="outline"><FaOpencart className="text-[2rem]" /></Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                            <AlertDialogHeader>
+                                <AlertDialogTitle className="text-center">Log in first to add to Cart</AlertDialogTitle>
+                            </AlertDialogHeader>
+
+                            <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <Link href="/login"><AlertDialogAction>Login</AlertDialogAction></Link>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialog>
+                )}
             </div>
         </div>
     )
