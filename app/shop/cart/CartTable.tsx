@@ -36,6 +36,7 @@ interface CartTableProps {
 export default function CartTable({ cartProduct, selectedItems, setSelectedItems }: CartTableProps) {
 
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
+    
     useEffect(() => {
         setCartItems(cartProduct);
     }, [cartProduct]);
