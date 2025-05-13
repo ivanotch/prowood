@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 import Link from "next/link";
-
+import { useCartStore } from "@/stores/cartStores";
 
 interface User {
     userId: String;
@@ -26,7 +26,6 @@ export default function QuantityButton({ product }: { product: any }) {
 
     const [user, setUser] = useState<User | null>(null);
     const [quantity, setQuantity] = useState(1);
-
 
     useEffect(() => {
         fetch('/api/user')
@@ -46,6 +45,10 @@ export default function QuantityButton({ product }: { product: any }) {
 
             if (!res.ok) {
                 console.log('unsuccessful')
+            } else {
+                const updatedCartRes = await fetch('/api/cart');
+                const updatedCartData = await updatedCartRes.json();
+                useCartStore.getState().setCart(updatedCartData.cartItem);
             }
         } catch (error) {
             console.error("An unexpected error occurred haha:", error);
@@ -53,7 +56,7 @@ export default function QuantityButton({ product }: { product: any }) {
     }
 
     const handleBuy = async () => {
-        
+
     }
 
     return (
@@ -76,10 +79,9 @@ export default function QuantityButton({ product }: { product: any }) {
 
             <div className="flex gap-2 mb-[2.6rem]">
                 <Button className="p-1 w-[60%] text-white bg-main">Buy</Button>
-                
+
                 {user && (
                     <Button onClick={() => addToCart({ productId: product.product_id, quantity })} className="p-1 w-[40%] border-2 text-subMain border-subMain flex items-center justify-center" variant="outline"><FaOpencart className="text-[2rem]" /></Button>
-
                 )}
 
                 {!user && (

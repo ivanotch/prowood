@@ -10,6 +10,8 @@ import {
 } from "@/components/ui/popover"
 import Link from "next/link";
 import AvatarProfile from "../avatar/Avatar";
+import { useCartStore } from "@/stores/cartStores";
+
 
 interface User {
     userId: string;
@@ -38,38 +40,17 @@ interface CartItem {
 export default function Nav() {
 
     const [user, setUser] = useState<User | null>(null);
-    const [cartItems, setCartItems] = useState<CartItem[]>([]);
+    const cartItems = useCartStore((state) => state.cartItems);
+
 
     useEffect(() => {
         fetch('/api/user')
             .then(res => res.json())
             .then(data => setUser(data.user));
-
-
-        const fetchCart = async () => {
-            try {
-                const res = await fetch('/api/cart');
-                const data = await res.json();
-                setCartItems(data.cartItem);
-            } catch (err) {
-                console.error('Failed to fetch cart:', err);
-            }
-        };
-
-        fetchCart();
     }, []);
 
-    const handleLogout = async () => {
-        const res = await fetch("/api/logout/", {
-            method: 'POST',
-        })
 
-        if (res.ok) {
-            window.location.href = '/shop';
-        } else {
-            console.error("logout failed")
-        }
-    }
+    console.log("cartItems", cartItems)
 
     return (
         <div id="hero-nav" className="flex justify-between h-[3.8rem] rounded-md items-center bg-[#1a1e25]">

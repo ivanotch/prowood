@@ -1,9 +1,7 @@
 'use client'
 import { IoIosArrowRoundForward } from "react-icons/io";
-import { FaOpencart } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 import Image from 'next/image';
-import { useRouter } from "next/navigation";
 import { RiArrowRightUpBoxFill } from "react-icons/ri";
 import { LiaCopyrightSolid } from "react-icons/lia";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -12,10 +10,12 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
+import { useCartStore } from "@/stores/cartStores";
 
 export default function Home() {
 
-    const router = useRouter();
+    const setCart = useCartStore((state) => state.setCart);
+
     const [user, setUser] = useState<{ email: string, name: string } | null>(null);
 
     useEffect(() => {
@@ -29,6 +29,17 @@ export default function Home() {
                 if (res.ok) {
                     const data = await res.json();
                     setUser(data.user);
+
+                    const cartRes = await fetch("/api/cart", {
+                        method: "GET",
+                        credentials: "same-origin",
+                    })
+
+                    if (cartRes.ok) {
+                        const cartData = await cartRes.json();
+                        // console.log(cartData)
+                        setCart(cartData);
+                    }
                 } else {
                     setUser(null)
                 }
@@ -52,8 +63,6 @@ export default function Home() {
             console.error("logout failed")
         }
     }
-
-    console.log(user)
 
     return (
 

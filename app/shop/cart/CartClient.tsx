@@ -1,6 +1,7 @@
 'use client'
 import { useState } from "react"
 import CartTable from "./CartTable";
+import { useCartStore } from "@/stores/cartStores";
 
 interface CartClientProps {
     cartProduct: {
@@ -19,6 +20,7 @@ interface CartClientProps {
     }[];
 }
 
+//try to implement cartStore
 export default function CartClient({ cartProduct }: CartClientProps) {
 
     const [selectedItems, setSelectedItems] = useState<string[]>([])
