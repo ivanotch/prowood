@@ -67,44 +67,70 @@ export default function Nav() {
 
                 <Popover>
                     <PopoverTrigger asChild>
-                        <button><FaOpencart className="font-extrabold text-[2rem]" /></button>
+                        <button>
+                            <FaOpencart className="font-extrabold text-[2rem]" />
+                        </button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-90 text-center">
+
+                    <PopoverContent className="w-90 text-center max-h-[40rem] relative p-0">
                         {user != null && Array.isArray(cartItems) && cartItems.length > 0 && (
                             <>
-                                <div className="text-left">
+                                {/* Scrollable content wrapper */}
+                                <div className="overflow-y-auto max-h-[34rem] px-4 pt-4 pb-[4rem] text-left">
                                     {cartItems.map((item, index) => (
-                                        <div key={index} className="border-b rounded p-4 mb-4 shadow items-center justify-between flex">
-                                            <Image src={String(item.product.productImage)} alt="Product Image"
+                                        <div
+                                            key={index}
+                                            className="border-b rounded p-4 mb-4 shadow flex items-center justify-between"
+                                        >
+                                            <Image
+                                                src={String(item.product.productImage)}
+                                                alt="Product Image"
                                                 width={50}
                                                 height={50}
                                                 className="object-cover rounded"
                                             />
-                                            <div className="flex flex-col">
-                                                <p className="text-lg font-bold">{item.product.name.length > 20 ? `${item.product.name.slice(0, 20)}...` : item.product.name}</p>
+                                            <div className="flex flex-col ml-4 flex-1">
+                                                <p className="text-lg font-bold">
+                                                    {item.product.name.length > 20
+                                                        ? `${item.product.name.slice(0, 20)}...`
+                                                        : item.product.name}
+                                                </p>
                                                 <p>{item.product.category}</p>
                                             </div>
-                                            <p><span className="text-[1.3rem]">₱</span>{item.product.pricePerUnit}</p>
+                                            <p>
+                                                <span className="text-[1.3rem]">₱</span>
+                                                {item.product.pricePerUnit}
+                                            </p>
                                         </div>
                                     ))}
                                 </div>
 
-                                <Link href="/shop/cart" className="py-2 px-6 border-[2px] text-main border-main font-600 rounded-lg"> View Cart </Link>
-
+                                {/* Fixed bottom button */}
+                                <div className="absolute bottom-0 left-0 w-full bg-white border-t p-4">
+                                    <Link
+                                        href="/shop/cart"
+                                        className="block w-full text-center py-2 px-6 border-2 text-main border-main font-semibold rounded-lg"
+                                    >
+                                        View Cart
+                                    </Link>
+                                </div>
                             </>
                         )}
 
                         {user == null && (
-                            <>
-                                <div className="my-[2rem] text-[1.2rem]">Login to see Cart Items.</div>
-                                <Link href="/login" className="py-2 px-6 border-[2px] text-main border-main font-600 rounded-lg">Login</Link>
-                            </>
+                            <div className="p-4">
+                                <div className="my-6 text-[1.2rem]">Login to see Cart Items.</div>
+                                <Link
+                                    href="/login"
+                                    className="py-2 px-6 border-[2px] text-main border-main font-semibold rounded-lg"
+                                >
+                                    Login
+                                </Link>
+                            </div>
                         )}
-
-
-
                     </PopoverContent>
                 </Popover>
+
 
             </div>
         </div>

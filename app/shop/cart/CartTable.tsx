@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/table"
 import Image from "next/image"
 import { useState, useEffect } from "react"
+import { useCartStore } from "@/stores/cartStores"
 
 type CartItem = {
     product: {
@@ -36,6 +37,7 @@ interface CartTableProps {
 export default function CartTable({ cartProduct, selectedItems, setSelectedItems }: CartTableProps) {
 
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
+    const setCart = useCartStore((state) => state.setCart)
     
     useEffect(() => {
         setCartItems(cartProduct);
@@ -51,6 +53,11 @@ export default function CartTable({ cartProduct, selectedItems, setSelectedItems
 
             if (res.ok) {
                 console.log("deleted successfully");
+                setSelectedItems([]);
+                const cartRes = await fetch("/api/cart");
+                const cartData = await cartRes.json();
+                setCart(cartData.cartItem);
+
             } else {
                 console.log("unsuccessful");
             }

@@ -26,8 +26,9 @@ export default function AvatarProfile() {
 
     const handleLogout = async () => {
         try {
-            const res = await fetch('api/logout/', {
+            const res = await fetch('/api/logout/', {
                 method: 'POST',
+                credentials: 'include',
             })
 
             if (res.ok) {

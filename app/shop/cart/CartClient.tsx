@@ -1,39 +1,26 @@
 'use client'
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import CartTable from "./CartTable";
 import { useCartStore } from "@/stores/cartStores";
 
-interface CartClientProps {
-    cartProduct: {
-        product: {
-            name: string;
-            product_id: string;
-            description: string;
-            stock: number;
-            pricePerUnit: number;
-            productImage: string | null;
-            category: string | null;
-        };
-        quantity: number;
-        customerId: string;
-        productId: string;
-    }[];
-}
+
 
 //try to implement cartStore
-export default function CartClient({ cartProduct }: CartClientProps) {
+export default function CartClient() {
 
     const [selectedItems, setSelectedItems] = useState<string[]>([])
-    const [cartItems, setCartItems] = useState(cartProduct);
+    // const [cartItems, setCartItems] = useState(cartProduct);
+    const cartData = useCartStore((state) => state.cartItems)
+    const setCartData = useCartStore((state) => state.setCart);
 
 
-    const isAllSelected = selectedItems.length === cartProduct.length;
+    const isAllSelected = selectedItems.length === cartData.length;
 
     const toggleSelectAll = () => {
         if (isAllSelected) {
             setSelectedItems([]);
         } else {
-            setSelectedItems(cartProduct.map(item => item.productId));
+            setSelectedItems(cartData.map(item => item.productId));
         }
     };
 
@@ -41,13 +28,16 @@ export default function CartClient({ cartProduct }: CartClientProps) {
         try {
             const res = await fetch(`/api/cart/delete-multiple`, {
                 method: 'POST',
-                headers: {'Content-type':'application/json'},
-                body: JSON.stringify({productIds: selectedItems})
+                headers: { 'Content-type': 'application/json' },
+                body: JSON.stringify({ productIds: selectedItems })
             });
 
             if (res.ok) {
                 console.log("deleted successfully");
                 setSelectedItems([])
+                const newCartRes = await fetch("/api/cart");
+                const newCartData = await newCartRes.json()
+                setCartData(newCartData.cartItem);
             } else {
                 console.log("unsuccessful");
             }
@@ -64,7 +54,7 @@ export default function CartClient({ cartProduct }: CartClientProps) {
                     <p className="text-[1.1rem]">Here's your cart list.</p>
                 </div>
                 <CartTable
-                    cartProduct={cartItems}
+                    cartProduct={cartData}
                     selectedItems={selectedItems}
                     setSelectedItems={setSelectedItems}
                 />

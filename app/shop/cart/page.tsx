@@ -37,7 +37,7 @@ export default async function Cart() {
                 </div>
             </div>
 
-            <CartClient cartProduct={cartProduct} />
+            <CartClient/>
 
         </div>
     )
