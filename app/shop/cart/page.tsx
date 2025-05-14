@@ -1,6 +1,6 @@
 
-import prisma from "@/utils/prisma"
-import CartTable from "./CartTable"
+// import prisma from "@/utils/prisma"
+// import CartTable from "./CartTable"
 import getUserFromServer from '../../../utils/authServer'
 import AvatarProfile from "@/app/components/avatar/Avatar"
 import CartClient from "./CartClient";
@@ -12,14 +12,14 @@ export default async function Cart() {
     const user = await getUserFromServer();
     // const cartItem = useCartStore((state) => state.cartItems)
 
-    const cartProduct = await prisma.cart.findMany({
-        where: {
-            customerId: user?.userId
-        },
-        include: {
-            product: true
-        }
-    })
+    // const cartProduct = await prisma.cart.findMany({
+    //     where: {
+    //         customerId: user?.userId
+    //     },
+    //     include: {
+    //         product: true
+    //     }
+    // })
 
     return (
         <div className="pt-[1rem]">

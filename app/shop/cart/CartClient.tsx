@@ -1,17 +1,15 @@
 'use client'
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import CartTable from "./CartTable";
 import { useCartStore } from "@/stores/cartStores";
+import { useRouter } from "next/navigation";
 
-
-
-//try to implement cartStore
 export default function CartClient() {
 
     const [selectedItems, setSelectedItems] = useState<string[]>([])
-    // const [cartItems, setCartItems] = useState(cartProduct);
     const cartData = useCartStore((state) => state.cartItems)
     const setCartData = useCartStore((state) => state.setCart);
+    const router = useRouter()
 
 
     const isAllSelected = selectedItems.length === cartData.length;
@@ -46,6 +44,13 @@ export default function CartClient() {
         }
     };
 
+    const handleCheckout = () => {
+        if (selectedItems.length === 0) return;
+
+        const query = selectedItems.map(id => `ids=${id}`).join("&");
+        router.push(`/shop/checkout?${query}`);
+    }
+
     return (
         <>
             <div className="mt-[1rem] w-[90%] mx-[auto] border border-gray-400 rounded-md p-5 mb-[6rem]">
@@ -74,7 +79,7 @@ export default function CartClient() {
                 </div>
                 <div className="flex items-center gap-4">
                     <p className="text-sm font-medium">Total ({selectedItems.length} items)</p>
-                    <button className="bg-main text-white px-4 py-3 text-[1.2rem] rounded-md text-sm">Checkout</button>
+                    <button onClick={handleCheckout} className="bg-main text-white px-4 py-3 text-[1.2rem] rounded-md text-sm">Checkout</button>
                 </div>
             </div>
 
