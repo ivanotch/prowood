@@ -28,10 +28,10 @@ export async function POST(req: Request) {
         }
 
         // If credentials are correct, generate a token
-        const token = jwt.sign({ userId: user.customerId, email: user.email, name:user.name}, SECRET_KEY, { expiresIn: '1d' });
+        const token = jwt.sign({ userId: user.customerId, email: user.email, name:user.name, address: user.address, contact: user.contact}, SECRET_KEY, { expiresIn: '1d' });
 
         // Set the token in an HttpOnly cookie
-        const res = NextResponse.json({ message: "Login Successful.", user: { id: user.customerId, name: user.name, email: user.email } }, { status: 200 });
+        const res = NextResponse.json({ message: "Login Successful.", user: { id: user.customerId, name: user.name, email: user.email, contact: user.contact, address: user.address } }, { status: 200 });
 
         // Set the HttpOnly cookie
         res.cookies.set(COOKIE_NAME, token, {

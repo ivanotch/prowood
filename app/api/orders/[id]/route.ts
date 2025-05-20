@@ -4,7 +4,7 @@ import { authenticate } from "@/utils/auth";
 
 //get a specific order only for user
 export async function GET(req: Request, { params }: { params: { orderId: string } }) {
-  const user = await authenticate(req);
+  const user = await authenticate();
   if (!user) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
@@ -27,7 +27,7 @@ export async function GET(req: Request, { params }: { params: { orderId: string 
 
 //delete specific order
 export async function DELETE(req: Request, { params }: { params: { orderId: string } }) {
-  const user = await authenticate(req);
+  const user = await authenticate();
   if (!user) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }

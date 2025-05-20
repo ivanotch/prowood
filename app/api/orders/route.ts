@@ -5,7 +5,7 @@ import { authenticate } from "@/utils/auth";
 // Get all orders for the authenticated user....working
 export async function GET(req: Request) {
   // Authenticate the request
-  const user = await authenticate(req);
+  const user = await authenticate();
   if (!user) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
@@ -28,7 +28,7 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   try {
     // Authenticate the request
-    const user = await authenticate(req);
+    const user = await authenticate();
     if (!user) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }

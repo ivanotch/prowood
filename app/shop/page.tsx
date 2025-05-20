@@ -93,6 +93,7 @@ export default function Home() {
                                             </Avatar>
                                         </PopoverTrigger>
                                         <PopoverContent className="w-50 text-center flex flex-col gap-3">
+                                            <a href="/shop/myAccount" className="border-b-3 border-slate-400 p-1">My Account</a>
                                             <a href="/shop/cart" className="border-b-3 border-slate-400 p-1">View Cart</a>
                                             <a href="/shop/products" className="border-b-3 border-slate-400 p-1">Shop</a>
                                             <button onClick={handleLogout} className="rounded-md p-1 bg-red-800 font-bold text-white">Log out</button>
