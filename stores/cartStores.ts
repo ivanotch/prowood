@@ -25,9 +25,10 @@ interface CartStore {
   removeFromCart: (productId: string) => void;
   clearCart: () => void;
   setCart: (cart: CartItem[]) => void;
+  getProductsByIds: (ids: string[]) => CartItem[];
 }
 
-export const useCartStore = create<CartStore>((set) => ({
+export const useCartStore = create<CartStore>((set, get) => ({
   cartItems: [],
 
   addToCart: (item) =>
@@ -60,4 +61,7 @@ export const useCartStore = create<CartStore>((set) => ({
   clearCart: () => set({ cartItems: [] }),
 
   setCart: (cart) => set({ cartItems: cart }),
+
+  getProductsByIds: (ids: string[]) =>
+    get().cartItems.filter(item => ids.includes(item.productId)), // ✅ use productId
 }));
