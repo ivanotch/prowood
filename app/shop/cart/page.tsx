@@ -10,16 +10,6 @@ import CartClient from "./CartClient";
 export default async function Cart() {
 
     const user = await getUserFromServer();
-    // const cartItem = useCartStore((state) => state.cartItems)
-
-    // const cartProduct = await prisma.cart.findMany({
-    //     where: {
-    //         customerId: user?.userId
-    //     },
-    //     include: {
-    //         product: true
-    //     }
-    // })
 
     return (
         <div className="pt-[1rem]">

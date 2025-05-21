@@ -40,7 +40,7 @@ export default function CartClient() {
                 console.log("unsuccessful");
             }
         } catch (error) {
-            console.error(error);
+            console.error(error); 
         }
     };
 

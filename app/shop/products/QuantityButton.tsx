@@ -15,6 +15,7 @@ import {
 import { Button } from "@/components/ui/button"
 import Link from "next/link";
 import { useCartStore } from "@/stores/cartStores";
+import { useRouter } from "next/navigation";
 
 interface User {
     userId: String;
@@ -24,6 +25,7 @@ interface User {
 
 export default function QuantityButton({ product }: { product: any }) {
 
+    const router = useRouter();
     const [user, setUser] = useState<User | null>(null);
     const [quantity, setQuantity] = useState(1);
 
@@ -55,8 +57,9 @@ export default function QuantityButton({ product }: { product: any }) {
         }
     }
 
-    const handleBuy = async () => {
-
+    const handleBuy = ({productId}: {productId: string}) => {
+        const query = `ids=${productId}`
+        router.push(`/shop/checkout?${query}`)
     }
 
     return (
@@ -78,7 +81,7 @@ export default function QuantityButton({ product }: { product: any }) {
             </div>
 
             <div className="flex gap-2 mb-[2.6rem]">
-                <Button className="p-1 w-[60%] text-white bg-main">Buy</Button>
+                <Button onClick={() => handleBuy({productId: product.product_id})} className="p-1 w-[60%] text-white bg-main">Buy</Button>
 
                 {user && (
                     <Button onClick={() => addToCart({ productId: product.product_id, quantity })} className="p-1 w-[40%] border-2 text-subMain border-subMain flex items-center justify-center" variant="outline"><FaOpencart className="text-[2rem]" /></Button>
