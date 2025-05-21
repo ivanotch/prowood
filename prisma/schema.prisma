@@ -48,10 +48,10 @@ model Customer {
   contact    String?
   email      String @unique
   password   String // Hashed password
-  address    String?
 
   orders Order[]
   carts  Cart[]
+  address Address[]
 }
 
 // Admin Table
@@ -86,7 +86,7 @@ model Order {
   customerId String // Just a foreign key
   approvedBy String? // Just a foreign key
 
-  address          String
+  addressId        String
   paymentStatus    PaymentStatus
   deliveryStatus   DeliveryStatus
   deliveryDate     DateTime?
@@ -95,6 +95,7 @@ model Order {
 
   customer Customer @relation(fields: [customerId], references: [customerId])
   admin    Admin?   @relation(fields: [approvedBy], references: [adminId], name: "OrderApprovedBy")
+  address Address @relation(fields: [addressId], references: [id])
 
   items OrderItem[]
 }
@@ -120,4 +121,19 @@ model Cart {
   product  Product  @relation(fields: [productId], references: [product_id])
 
   @@id([customerId, productId]) // Prevents duplicate cart entries
+}
+
+model Address {
+  id  String  @id @default(uuid())
+  zipCode String  
+  street String
+  apartment String?
+  country String
+  region String
+  city String
+
+  customer Customer? @relation(fields: [customerId], references: [customerId])
+  customerId String? @unique
+
+  order Order[]
 }

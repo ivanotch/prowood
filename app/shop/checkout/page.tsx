@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { FaOpencart } from "react-icons/fa6";
 import { Input } from "@/components/ui/input"
 import Image from "next/image";
+import Link from "next/link";
 import { FaCircleDot } from "react-icons/fa6"; // Optional icon
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { cn } from "@/lib/utils"; // for conditional classes if you're using ShadCN
@@ -17,7 +18,6 @@ import {
 
 import { useCartStore } from "@/stores/cartStores";
 import { Button } from "@/components/ui/button";
-import { Link } from "lucide-react";
 
 type CartItem = {
     product: {
@@ -211,7 +211,6 @@ export default function Checkout() {
                     </div>
                 </div>
             </div>
-            {/* {selectedItems.join(", ")} */}
         </div>
     )
 }

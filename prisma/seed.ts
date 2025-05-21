@@ -35,7 +35,19 @@ async function main() {
       contact: "987654321",
       email: "alice@example.com",
       password: hashedPassword,
-      address: "123 Main Street, City",
+    },
+  });
+
+  // Create Address for Customer
+  const address1 = await prisma.address.create({
+    data: {
+      street: "123 Main Street",
+      apartment: "Apt 101",
+      city: "Metroville",
+      region: "Metro Region",
+      country: "Countryland",
+      zipCode: "12345",
+      customerId: customer1.customerId,
     },
   });
 
@@ -53,7 +65,7 @@ async function main() {
 
   const product2 = await prisma.product.create({
     data: {
-      name: "Walnut",  
+      name: "Walnut",
       description: "183 x 1220mm Premium Quality SPC Flooring. Water Resistant, Scratch Resistant, and Low Maintenance",
       stock: 80,
       pricePerUnit: 265.0,
@@ -64,7 +76,7 @@ async function main() {
 
   const product3 = await prisma.product.create({
     data: {
-      name: "Stone Gray",  
+      name: "Stone Gray",
       description: "183 x 1220mm Premium Quality SPC Flooring. Water Resistant, Scratch Resistant, and Low Maintenance",
       stock: 80,
       pricePerUnit: 265.0,
@@ -75,7 +87,7 @@ async function main() {
 
   const product4 = await prisma.product.create({
     data: {
-      name: "Ash Gray",  
+      name: "Ash Gray",
       description: "183 x 1220mm Premium Quality SPC Flooring. Water Resistant, Scratch Resistant, and Low Maintenance",
       stock: 80,
       pricePerUnit: 265.0,
@@ -86,7 +98,7 @@ async function main() {
 
   const product5 = await prisma.product.create({
     data: {
-      name: "Birch",  
+      name: "Birch",
       description: "183 x 1220mm Premium Quality SPC Flooring. Water Resistant, Scratch Resistant, and Low Maintenance",
       stock: 80,
       pricePerUnit: 265.0,
@@ -97,7 +109,7 @@ async function main() {
 
   const product6 = await prisma.product.create({
     data: {
-      name: "Oak",  
+      name: "Oak",
       description: "183 x 1220mm Premium Quality SPC Flooring. Water Resistant, Scratch Resistant, and Low Maintenance",
       stock: 80,
       pricePerUnit: 265.0,
@@ -109,7 +121,7 @@ async function main() {
   //Products for WPC Indoor
   const product7 = await prisma.product.create({
     data: {
-      name: "European Oak WPC",  
+      name: "European Oak WPC",
       description: "24mm x 169mm x 2900mm Premium Quality SPC Flooring. Water Resistant, Scratch Resistant, and Low Maintenance",
       stock: 80,
       pricePerUnit: 650.0,
@@ -120,7 +132,7 @@ async function main() {
 
   const product8 = await prisma.product.create({
     data: {
-      name: "Black WPC",  
+      name: "Black WPC",
       description: "24mm x 169mm x 2900mm Premium Quality SPC Flooring. Water Resistant, Scratch Resistant, and Low Maintenance",
       stock: 80,
       pricePerUnit: 650.0,
@@ -131,7 +143,7 @@ async function main() {
 
   const product9 = await prisma.product.create({
     data: {
-      name: "Walnut WPC",  
+      name: "Walnut WPC",
       description: "24mm x 169mm x 2900mm Premium Quality SPC Flooring. Water Resistant, Scratch Resistant, and Low Maintenance",
       stock: 80,
       pricePerUnit: 650.0,
@@ -142,7 +154,7 @@ async function main() {
 
   const product10 = await prisma.product.create({
     data: {
-      name: "Gray",  
+      name: "Gray",
       description: "24mm x 169mm x 2900mm Premium Quality SPC Flooring. Water Resistant, Scratch Resistant, and Low Maintenance",
       stock: 80,
       pricePerUnit: 650.0,
@@ -153,7 +165,7 @@ async function main() {
 
   const product11 = await prisma.product.create({
     data: {
-      name: "Dark Walnut WPC",  
+      name: "Dark Walnut WPC",
       description: "24mm x 169mm x 2900mm Premium Quality SPC Flooring. Water Resistant, Scratch Resistant, and Low Maintenance",
       stock: 80,
       pricePerUnit: 650.0,
@@ -164,7 +176,7 @@ async function main() {
 
   const product12 = await prisma.product.create({
     data: {
-      name: "White Oak",  
+      name: "White Oak",
       description: "24mm x 169mm x 2900mm Premium Quality SPC Flooring. Water Resistant, Scratch Resistant, and Low Maintenance",
       stock: 80,
       pricePerUnit: 650.0,
@@ -177,7 +189,7 @@ async function main() {
 
   const product13 = await prisma.product.create({
     data: {
-      name: "Teak Brushed Outdoor WPC",  
+      name: "Teak Brushed Outdoor WPC",
       description: "26 x 220 x 2900mm Premium Quality Outdoor WPC Fluted Panels. Water Resistant, Fire Resistant, and Durable",
       stock: 80,
       pricePerUnit: 1500.0,
@@ -188,7 +200,7 @@ async function main() {
 
   const product14 = await prisma.product.create({
     data: {
-      name: "Golden Maple Brushed Outdoor WPC",  
+      name: "Golden Maple Brushed Outdoor WPC",
       description: "26 x 220 x 2900mm Premium Quality Outdoor WPC Fluted Panels. Water Resistant, Fire Resistant, and Durable",
       stock: 80,
       pricePerUnit: 1500.0,
@@ -199,7 +211,7 @@ async function main() {
 
   const product15 = await prisma.product.create({
     data: {
-      name: "European Pine Co Extrusion Outdoor WPC",  
+      name: "European Pine Co Extrusion Outdoor WPC",
       description: "26 x 220 x 2900mm Premium Quality Outdoor WPC Fluted Panels. Water Resistant, Fire Resistant, and Durable",
       stock: 80,
       pricePerUnit: 1500.0,
@@ -212,7 +224,7 @@ async function main() {
 
   const product16 = await prisma.product.create({
     data: {
-      name: "Black Indoor WPC Columns",  
+      name: "Black Indoor WPC Columns",
       description: "50 x 100 x 2900mm Premium Quality Indoor WPC Columns. Water Resistant, Fire Resistant, and Durable",
       stock: 80,
       pricePerUnit: 800.0,
@@ -223,7 +235,7 @@ async function main() {
 
   const product17 = await prisma.product.create({
     data: {
-      name: "Walnut Indoor WPC Columns",  
+      name: "Walnut Indoor WPC Columns",
       description: "50 x 100 x 2900mm Premium Quality Indoor WPC Columns. Water Resistant, Fire Resistant, and Durable",
       stock: 80,
       pricePerUnit: 800.0,
@@ -234,7 +246,7 @@ async function main() {
 
   const product18 = await prisma.product.create({
     data: {
-      name: "Dark Walnut Indoor WPC Columns",  
+      name: "Dark Walnut Indoor WPC Columns",
       description: "50 x 100 x 2900mm Premium Quality Indoor WPC Columns. Water Resistant, Fire Resistant, and Durable",
       stock: 80,
       pricePerUnit: 800.0,
@@ -245,7 +257,7 @@ async function main() {
 
   const product19 = await prisma.product.create({
     data: {
-      name: "White Oak Indoor WPC Columns",  
+      name: "White Oak Indoor WPC Columns",
       description: "50 x 100 x 2900mm Premium Quality Indoor WPC Columns. Water Resistant, Fire Resistant, and Durable",
       stock: 80,
       pricePerUnit: 800.0,
@@ -256,7 +268,7 @@ async function main() {
 
   const product20 = await prisma.product.create({
     data: {
-      name: "Gray Indoor WPC Columns",  
+      name: "Gray Indoor WPC Columns",
       description: "50 x 100 x 2900mm Premium Quality Indoor WPC Columns. Water Resistant, Fire Resistant, and Durable",
       stock: 80,
       pricePerUnit: 800.0,
@@ -267,7 +279,7 @@ async function main() {
 
   const product21 = await prisma.product.create({
     data: {
-      name: "European Oak Indoor WPC Columns",  
+      name: "European Oak Indoor WPC Columns",
       description: "50 x 100 x 2900mm Premium Quality Indoor WPC Columns. Water Resistant, Fire Resistant, and Durable",
       stock: 80,
       pricePerUnit: 800.0,
@@ -282,7 +294,7 @@ async function main() {
     data: {
       customerId: customer1.customerId,
       approvedBy: admin1.adminId,
-      address: "123 Main Street, City",
+      addressId: address1.id,
       paymentStatus: "UNPAID",
       deliveryStatus: "NOT_SHIPPED",
       modeOfPayment: "CASH",

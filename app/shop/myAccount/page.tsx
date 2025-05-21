@@ -41,11 +41,21 @@ enum ModeOfPayment {
 
 export default function MyAccount() {
 
+    interface Address {
+        street: string;
+        city: string;
+        region: string;
+        apartment?: string;
+        country: string;
+        zipCode: string;
+
+    }
+
     interface User {
         userId: string;
         email: string;
         name: string;
-        address: string;
+        address: Address[];
         contact: string;
     }
 
@@ -134,8 +144,12 @@ export default function MyAccount() {
                     <div className="flex flex-col mb-[1.5rem]">
                         <p className="font-semibold">Default Shipping Address</p>
                         <div className="text-slate-700 text-[1.1rem] flex flex-col gap-2">
-                            <p className="flex items-center gap-2"><FaAddressBook /> {user?.address}</p>
-                            <p className="flex items-center gap-2"><FaPhone /> {user?.contact}</p>
+                            <p className="flex items-center gap-2">
+                                <FaAddressBook />
+                                {user?.address[0]
+                                    ? `${user.address[0].street}, ${user.address[0].apartment ? user.address[0].apartment + ', ' : ''}${user.address[0].city}, ${user.address[0].region}, ${user.address[0].zipCode}, ${user.address[0].country}`
+                                    : 'No address on file'}
+                            </p>                            <p className="flex items-center gap-2"><FaPhone /> {user?.contact}</p>
                         </div>
                     </div>
 
