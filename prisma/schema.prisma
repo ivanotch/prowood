@@ -133,7 +133,7 @@ model Address {
   city String
 
   customer Customer? @relation(fields: [customerId], references: [customerId])
-  customerId String? @unique
+  customerId String?
 
   order Order[]
 }

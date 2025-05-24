@@ -26,6 +26,7 @@ export async function GET(req: Request) {
 
 // Create an order working
 export async function POST(req: Request) {
+  console.log("working api")
   try {
     // Authenticate the request
     const user = await authenticate();
@@ -51,11 +52,23 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "One or more products do not exist." }, { status: 400 });
     }
 
+    const newAddress = await prisma.address.create({
+      data: {
+        zipCode: address.zipCode,
+        street: address.street,
+        apartment: address?.apartment,
+        country: address.country,
+        region: address.region,
+        city: address.city,
+        customerId: user.userId
+      }
+    })
+
     // Create the order with order items
     const order = await prisma.order.create({
       data: {
         customerId: user.userId,
-        address,
+        addressId: newAddress.id,
         paymentStatus: "UNPAID",
         modeOfPayment,
         deliveryStatus: "NOT_SHIPPED",
@@ -66,7 +79,7 @@ export async function POST(req: Request) {
           })),
         },
       },
-      include: { items: { include: { product: true } } }, // Include product details
+      include: { items: { include: { product: true } }, address: true }, // Include product details
     });
 
     return NextResponse.json({ message: "Order created successfully!", order }, { status: 201 });

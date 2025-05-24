@@ -12,6 +12,7 @@ export async function POST(req: Request) {
     try {
         const body = await req.json();
         const { productIds } = body;
+        console.log(productIds)
 
         if (!Array.isArray(productIds) || productIds.length === 0) {
             return NextResponse.json({ message: 'No product IDs provided' }, { status: 400 });

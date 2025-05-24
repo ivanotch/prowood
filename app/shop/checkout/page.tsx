@@ -3,6 +3,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaOpencart } from "react-icons/fa6";
 import { Input } from "@/components/ui/input"
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { FaCircleDot } from "react-icons/fa6"; // Optional icon
@@ -34,15 +35,42 @@ type CartItem = {
     productId: string;
 };
 
+type AddressType = {
+    firstname: string;
+    lastName: string;
+    street: string;
+    apartment?: string;
+    zipCode: string;
+    city: string;
+    country: string;
+    region: string;
+};
+
+
 
 export default function Checkout() {
 
+    const router = useRouter();
+
     const getProductsByIds = useCartStore((state) => state.getProductsByIds);
+    const setCartData = useCartStore((state) => state.setCart);
+
     const searchParams = useSearchParams();
-    const [selectedItems, setSelectedItems] = useState<string[]>([]);
+    const [ids, setids] = useState<string[]>([]);
     const [productsToCheckout, setProductsToCheckout] = useState<CartItem[]>([])
 
-    const [selectedPayment, setSelectedPayment] = useState<string | null>(null);
+    const [selectedPayment, setSelectedPayment] = useState<string>("");
+
+    const [addressData, setAddressData] = useState({
+        firstname: "",
+        lastName: "",
+        street: "",
+        apartment: "",
+        zipCode: "",
+        city: "",
+        country: "",
+        region: "",
+    })
 
     const total = productsToCheckout.reduce((acc, item) => {
         return acc + item.product.pricePerUnit * item.quantity;
@@ -61,12 +89,47 @@ export default function Checkout() {
 
     useEffect(() => {
         const ids = searchParams.getAll("ids");
-        setSelectedItems(ids);
+        setids(ids);
 
         const products = getProductsByIds(ids);
         setProductsToCheckout(products);
     }, [searchParams]);
-    //should i fetch a data from the product database or create a function in cartStore in zustand tofilter cart item and give me the item base on the id in the selectedItem state
+
+    const onPaySubmit = async ({ addressData }: { addressData: AddressType }) => {
+        console.log(ids)
+        try {
+            console.log(selectedPayment)
+            const res = await fetch("/api/orders", {
+                method: "POST",
+                headers: { 'Content-type': 'application/json' },
+                body: JSON.stringify({ address: addressData, modeOfPayment: selectedPayment, items: productsToCheckout })
+            })
+
+            if (res.ok) {
+                console.log('order added successfully')
+
+                try {
+
+                    const del = await fetch("/api/cart/delete-multiple", {
+                        method: 'POST',
+                        headers: { 'Content-type': 'application/json' },
+                        body: JSON.stringify({ productIds: ids })
+                    })
+
+                    if (del.ok) {
+                        const newCartRes = await fetch("/api/cart");
+                        const newCartData = await newCartRes.json()
+                        setCartData(newCartData.cartItem);
+                        router.push("/shop/myAccount/")
+                    }
+                } catch (error) {
+                    console.log(error, "unable to delete");
+                }
+            }
+        } catch (error) {
+            console.log(error, "unable to update order")
+        }
+    }
 
     return (
         <div className="flex flex-col h-[100vh] m-2">
@@ -84,7 +147,7 @@ export default function Checkout() {
                     <div className="py-5 pl-15">
                         <div className="flex flex-col gap-4 mb-[2rem]">
                             <p className="text-[1.4rem] font-[500]">Delivery</p>
-                            <Select>
+                            <Select onValueChange={(value) => setAddressData({ ...addressData, country: value })}>
                                 <SelectTrigger className="w-[100%] !h-12 py-4">
                                     <SelectValue placeholder="Country" />
                                 </SelectTrigger>
@@ -96,23 +159,33 @@ export default function Checkout() {
                                 <Input
                                     className="h-12"
                                     placeholder="First Name"
+                                    onChange={(e) => setAddressData({ ...addressData, firstname: e.target.value })}
                                 />
                                 <Input
                                     className="h-12"
                                     placeholder="Last Name"
+                                    onChange={(e) => setAddressData({ ...addressData, lastName: e.target.value })}
                                 />
                             </div>
                             <Input
                                 className="h-12"
-                                placeholder="Address" />
+                                placeholder="Address"
+                                onChange={(e) => setAddressData({ ...addressData, street: e.target.value })}
+                            />
                             <Input
                                 className="h-12"
-                                placeholder="Appartment, suite, etc. (Optional)" />
+                                placeholder="Appartment, suite, etc. (Optional)"
+                                onChange={(e) => setAddressData({ ...addressData, apartment: e.target.value })}
+                            />
                             <div className="flex gap-4">
-                                <Input className="h-12" placeholder="Postal" />
-                                <Input className="h-12" placeholder="City" />
+                                <Input className="h-12" placeholder="Postal"
+                                    onChange={(e) => setAddressData({ ...addressData, zipCode: e.target.value })}
+                                />
+                                <Input className="h-12" placeholder="City"
+                                    onChange={(e) => setAddressData({ ...addressData, city: e.target.value })}
+                                />
                             </div>
-                            <Select>
+                            <Select onValueChange={(value) => setAddressData({ ...addressData, region: value })}>
                                 <SelectTrigger className="w-[100%] !h-12">
                                     <SelectValue placeholder="Region" />
                                 </SelectTrigger>
@@ -130,9 +203,10 @@ export default function Checkout() {
                             <Accordion
                                 type="single"
                                 collapsible
-                                value={selectedPayment ?? undefined}
-                                onValueChange={(val) => setSelectedPayment(val)}
-                                className="mt-4"
+                                value={selectedPayment}
+                                onValueChange={(val) => {
+                                    if (val) setSelectedPayment(val);
+                                }} className="mt-4"
                             >
                                 <AccordionItem value="xendit" className="border border-gray-300 rounded-lg">
                                     <AccordionTrigger className="flex items-center justify-between px-4 py-3">
@@ -151,13 +225,13 @@ export default function Checkout() {
                                     </AccordionContent>
                                 </AccordionItem>
 
-                                <AccordionItem value="pay-in-store" className="border border-gray-300 rounded-lg mt-2">
+                                <AccordionItem value="CASH" className="border border-gray-300 rounded-lg mt-2">
                                     <AccordionTrigger className="flex items-center justify-between px-4 py-3">
                                         <div className="flex items-center gap-3">
                                             <span
                                                 className={cn(
                                                     "w-4 h-4 rounded-full border-2 border-gray-500",
-                                                    selectedPayment === "pay-in-store" && "bg-transparent border-black border-6"
+                                                    selectedPayment === "CASH" && "bg-transparent border-black border-6"
                                                 )}
                                             />
                                             <span className="text-[1rem] font-medium">Pay In-Store</span>
@@ -169,7 +243,7 @@ export default function Checkout() {
                                 </AccordionItem>
                             </Accordion>
                         </div>
-                        <Button className="mt-[2rem] w-[100%] p-5 text-[1.15rem]">Pay now</Button>
+                        <Button onClick={() => onPaySubmit({ addressData: addressData })} className="mt-[2rem] w-[100%] p-5 text-[1.15rem]">Pay now</Button>
                     </div>
                 </div>
                 <div id="otherSide" className="w-[50%] sticky top-[5rem] h-[calc(100vh-5rem)] overflow-y-auto">
@@ -188,6 +262,7 @@ export default function Checkout() {
                                         <div className="text-[1.2rem] font-inter">{item.product.name}</div>
                                         <div className="text-[0.95rem] text-slate-500 font-epilogue">{item.product.description}</div>
                                     </div>
+                                    <div className="text-[0.9rem] text-slate-600 mr-[1.3rem]">x{item.quantity}</div>
                                     <div className="text-[1.1rem] mr-[1.5rem]">{Number(item.product.pricePerUnit) * Number(item.quantity)}</div>
                                 </div>
                             </div>

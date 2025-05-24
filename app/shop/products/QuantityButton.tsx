@@ -57,9 +57,27 @@ export default function QuantityButton({ product }: { product: any }) {
         }
     }
 
-    const handleBuy = ({productId}: {productId: string}) => {
-        const query = `ids=${productId}`
-        router.push(`/shop/checkout?${query}`)
+    const handleBuy = async ({ productId, quantity }: { productId: string, quantity: number }) => {
+        try {
+            const res = await fetch('/api/cart', {
+                method: 'POST',
+                headers: { 'Content-type': 'application/json' },
+                body: JSON.stringify({ productId, quantity })
+            })
+
+            if (!res.ok) {
+                console.log('unsuccessful')
+            } else {
+                const updatedCartRes = await fetch('/api/cart');
+                const updatedCartData = await updatedCartRes.json();
+                useCartStore.getState().setCart(updatedCartData.cartItem);
+
+                const query = `ids=${productId}`;
+                router.push(`/shop/checkout?${query}`);
+            }
+        } catch (error) {
+            console.error("An unexpected error occurred haha:", error);
+        }
     }
 
     return (
@@ -81,7 +99,7 @@ export default function QuantityButton({ product }: { product: any }) {
             </div>
 
             <div className="flex gap-2 mb-[2.6rem]">
-                <Button onClick={() => handleBuy({productId: product.product_id})} className="p-1 w-[60%] text-white bg-main">Buy</Button>
+                <Button onClick={() => handleBuy({ productId: product.product_id, quantity })} className="p-1 w-[60%] text-white bg-main">Buy</Button>
 
                 {user && (
                     <Button onClick={() => addToCart({ productId: product.product_id, quantity })} className="p-1 w-[40%] border-2 text-subMain border-subMain flex items-center justify-center" variant="outline"><FaOpencart className="text-[2rem]" /></Button>
