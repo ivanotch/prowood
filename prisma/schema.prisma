@@ -48,6 +48,7 @@ model Customer {
   contact    String?
   email      String @unique
   password   String // Hashed password
+  createdAt DateTime @default(now())
 
   orders Order[]
   carts  Cart[]
@@ -62,6 +63,7 @@ model Admin {
   email   String @unique
   role    Role
   password String
+  createdAt DateTime @default(now())
 
   approvedOrders Order[] @relation("OrderApprovedBy")
 }
@@ -75,6 +77,7 @@ model Product {
   pricePerUnit Float
   productImage String? // Optional
   category     String? // Optional
+  createdAt DateTime @default(now())
 
   carts      Cart[]
   orderItems OrderItem[]
@@ -92,6 +95,7 @@ model Order {
   deliveryDate     DateTime?
   modeOfPayment    ModeOfPayment
   accomplishedDate DateTime?
+  createdAt DateTime @default(now())
 
   customer Customer @relation(fields: [customerId], references: [customerId])
   admin    Admin?   @relation(fields: [approvedBy], references: [adminId], name: "OrderApprovedBy")
@@ -106,6 +110,7 @@ model OrderItem {
   order_id    String
   productId   String
   quantity    Int
+  createdAt DateTime @default(now())
 
   order   Order   @relation(fields: [order_id], references: [order_id], onDelete: Cascade)
   product Product @relation(fields: [productId], references: [product_id])
@@ -116,6 +121,7 @@ model Cart {
   customerId String
   productId  String
   quantity   Int
+  createdAt DateTime @default(now())
 
   customer Customer @relation(fields: [customerId], references: [customerId])
   product  Product  @relation(fields: [productId], references: [product_id])
@@ -131,6 +137,7 @@ model Address {
   country String
   region String
   city String
+  createdAt DateTime @default(now())
 
   customer Customer? @relation(fields: [customerId], references: [customerId])
   customerId String?
