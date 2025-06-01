@@ -1,6 +1,10 @@
+import DataTable from "./TabbedTable"
 
 export default function Inventory() {
     return(
-        <div>Inventory</div>
+        
+        <div>
+            <DataTable />
+        </div>
     )
 }
