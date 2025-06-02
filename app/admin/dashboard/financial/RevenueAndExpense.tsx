@@ -136,7 +136,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export function ChartAreaInteractive() {
+export function RevenueAndExpenseChart() {
   const isMobile = useIsMobile()
   const [timeRange, setTimeRange] = React.useState("30d")
 
@@ -163,7 +163,7 @@ export function ChartAreaInteractive() {
   return (
     <Card className="@container/card">
       <CardHeader className="relative">
-        <CardTitle>SPC vs WPC Sales</CardTitle>
+        <CardTitle>Revenue vs Stock Expense</CardTitle>
         <CardDescription>
           <span className="@[540px]/card:block hidden">
             Total for the last 3 months
