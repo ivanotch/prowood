@@ -12,11 +12,9 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useState } from "react"
-import { useRouter } from "next/navigation"
 
 export function LoginForm({ className, ...props }: React.ComponentProps<"div">) {
 
-  const router = useRouter()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("")
@@ -30,8 +28,8 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
     try {
       const res = await fetch("/api/admin/auth/login/", {
         method: 'POST',
-        headers: {'Content-type':'application/json'},
-        body: JSON.stringify({email, password}),
+        headers: { 'Content-type': 'application/json' },
+        body: JSON.stringify({ email, password }),
         credentials: "include",
       })
 
@@ -39,7 +37,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
         const data = await res.json();
         setError(data.message || "Login Failed")
       } else {
-        router.push("/admin/dashboard")
+        window.location.href = "/admin/dashboard"
       }
     } catch (err) {
       setError("Something went wrong. :( ")

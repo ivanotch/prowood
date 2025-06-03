@@ -4,7 +4,7 @@ import prisma from "@/utils/prisma";
 
 //get all orders... working na
 export async function GET(req: Request) {
-    const admin = await authenticateAdmin(req);
+    const admin = await authenticateAdmin();
     if (!admin) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }

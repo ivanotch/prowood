@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 
 const SECRET_KEY = process.env.JWT_SECRET || 'ivanpogi';
 const COOKIE_NAME = 'auth_token';
-
+//uses in route api
 export async function authenticate() {
   const cookieStore = cookies();
   const token =  (await cookieStore).get(COOKIE_NAME)?.value;
@@ -19,15 +19,15 @@ export async function authenticate() {
 }
 
 export async function authenticateAdmin() {
-  const cookieStore = cookies();
-  const token = (await cookieStore).get(COOKIE_NAME)?.value;
+  const cookieStore =  cookies();
+  const token =  (await cookieStore).get('adminToken')?.value;
 
   if (!token) return null;
 
   try {
-    const decoded = jwt.verify(token, SECRET_KEY) as { adminId?: string; role?: string };
+    const decoded = jwt.verify(token, SECRET_KEY) as { adminId?: string; name?: string; contact?: string; role?: string; email?: string };
     
-    if (decoded.role === 'ADMIN' || decoded.role === 'SUPERADMIN') {
+    if (decoded.role === 'ADMIN' || decoded.role === 'SUPER_ADMIN') {
       return decoded;
     }
 

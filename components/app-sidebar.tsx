@@ -13,6 +13,8 @@ import {
     SidebarFooter
 } from "@/components/ui/sidebar"
 
+import { NavAdmin } from "./nav-AdminUser"
+
 // Menu ApplicationMenu.
 const applicationMenu = [
     {
@@ -44,7 +46,17 @@ const footerMenu = [
     },
 ]
 
-export function AppSidebar() {
+interface AdminInfo {
+  adminId?: string;
+  role?: string;
+  email?: string;
+  name?: string;
+  contact?: string;
+}
+
+export async function AppSidebar({admin}: {admin: AdminInfo | null}) {
+    console.log(admin)
+    
     return (
         <Sidebar>
             <SidebarContent>
@@ -80,6 +92,7 @@ export function AppSidebar() {
                         </SidebarMenu>
                     </SidebarGroupContent>
                 </SidebarGroup>
+
                 <SidebarFooter>
                     <SidebarGroupContent>
                         <SidebarGroupLabel>Manage</SidebarGroupLabel>
@@ -96,6 +109,7 @@ export function AppSidebar() {
                             ))}
                         </SidebarMenu>
                     </SidebarGroupContent>
+                    <NavAdmin admin={admin} />
                 </SidebarFooter>
             </SidebarContent>
         </Sidebar>
