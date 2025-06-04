@@ -59,7 +59,7 @@ export function SalesByProduct() {
   return (
     <Card className="sm:w-[50%]">
       <CardHeader>
-        <CardTitle>Bar Chart - Custom Label</CardTitle>
+        <CardTitle>Sales By Product</CardTitle>
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
       <CardContent>

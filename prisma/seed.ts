@@ -325,6 +325,105 @@ async function main() {
       quantity: 3,
     },
   });
+
+  // Helper: Random date within current or last month
+  function getRandomDateInMonth(monthOffset = 0) {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth() - monthOffset; // 0 = this month, 1 = last month
+
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+
+    const randomTimestamp = firstDay.getTime() + Math.random() * (lastDay.getTime() - firstDay.getTime());
+    return new Date(randomTimestamp);
+  }
+
+  // Add more customers
+  const customer2 = await prisma.customer.create({
+    data: {
+      name: "Bob Smith",
+      contact: "111222333",
+      email: "bob@example.com",
+      password: hashedPassword,
+    },
+  });
+  const customer3 = await prisma.customer.create({
+    data: {
+      name: "Carol Davis",
+      contact: "444555666",
+      email: "carol@example.com",
+      password: hashedPassword,
+    },
+  });
+
+  // Add more addresses for new customers
+  const address2 = await prisma.address.create({
+    data: {
+      street: "456 Elm Street",
+      city: "Metroville",
+      region: "Metro Region",
+      country: "Countryland",
+      zipCode: "54321",
+      customerId: customer2.customerId,
+    },
+  });
+  const address3 = await prisma.address.create({
+    data: {
+      street: "789 Oak Avenue",
+      city: "Metroville",
+      region: "Metro Region",
+      country: "Countryland",
+      zipCode: "67890",
+      customerId: customer3.customerId,
+    },
+  });
+
+  // Collect product IDs
+  const products = await prisma.product.findMany();
+
+  // Helper: Get N random products
+  function getRandomProducts(n = 2) {
+    const shuffled = [...products].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, n);
+  }
+
+  const customers = [
+    { id: customer1.customerId, addressId: address1.id },
+    { id: customer2.customerId, addressId: address2.id },
+    { id: customer3.customerId, addressId: address3.id },
+  ];
+
+  // Generate 6 orders — 3 from this month, 3 from last month
+  for (let i = 0; i < 6; i++) {
+    const isLastMonth = i < 3;
+    const randomDate = getRandomDateInMonth(isLastMonth ? 1 : 0);
+    const customer = customers[i % customers.length];
+    const order = await prisma.order.create({
+      data: {
+        customerId: customer.id,
+        approvedBy: admin2.adminId,
+        addressId: customer.addressId,
+        paymentStatus: "PAYED",
+        deliveryStatus: "DELIVERED",
+        modeOfPayment: "CASH",
+        createdAt: randomDate,
+        accomplishedDate: randomDate,
+        deliveryDate: new Date(randomDate.getTime() + 2 * 24 * 60 * 60 * 1000),
+      },
+    });
+
+    // Add 2-3 random items
+    const orderItems = getRandomProducts(2 + (i % 2)).map((product) => ({
+      order_id: order.order_id,
+      productId: product.product_id,
+      quantity: 1 + Math.floor(Math.random() * 3),
+      createdAt: randomDate,
+    }));
+
+    await prisma.orderItem.createMany({ data: orderItems });
+  }
+
 }
 
 main()

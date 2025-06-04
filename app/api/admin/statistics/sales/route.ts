@@ -3,10 +3,7 @@ import prisma from "@/utils/prisma";
 import { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-
-
-
-export default async function GET(req: NextRequest) {
+export async function GET(req: NextRequest) {
     const admin = await authenticateAdmin();
 
     if (!admin) {
@@ -23,12 +20,20 @@ export default async function GET(req: NextRequest) {
             const now = new Date();
             const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
             const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-            startDateParam = firstDay.toISOString();
-            endDateParam = lastDay.toISOString();
+
+            // Format as YYYY-MM-DD
+            startDateParam = firstDay.toISOString().slice(0, 10); // '2025-06-01'
+            endDateParam = lastDay.toISOString().slice(0, 10);    // '2025-06-30'
         }
 
-        const startDate = startDateParam ? new Date(startDateParam) : undefined;
-        const endDate = endDateParam ? new Date(endDateParam) : undefined;
+        const startDate = startDateParam
+            ? new Date(`${startDateParam}T00:00:00.000Z`)
+            : undefined;
+
+        const endDate = endDateParam
+            ? new Date(`${endDateParam}T23:59:59.999Z`)
+            : undefined;
+
 
         const dateFilterSQL = startDate && endDate
             ? `AND o."createdAt" BETWEEN '${startDate.toISOString()}' AND '${endDate.toISOString()}'`
@@ -42,7 +47,7 @@ export default async function GET(req: NextRequest) {
             { total: number | null }[]
         >(`SELECT SUM(oi.quantity * p."pricePerUnit") AS total
             FROM "OrderItem" oi
-            JOIN "order" o ON o."order_id" = oi."order_id"
+            JOIN "Order" o ON o."order_id" = oi."order_id"
             JOIN "Product" p ON p."product_id" = oi."productId"
             WHERE o."paymentStatus" = 'PAYED' ${dateFilterSQL}
         `);
@@ -56,19 +61,33 @@ export default async function GET(req: NextRequest) {
             where: {
                 order: {
                     paymentStatus: 'PAYED',
-                    ...(startDate && { createdAt: { gte: startDate } }),
-                    ...(endDate && { createdAt: { lte: endDate } })
-                }
-            }
-        })
+                    ...(startDate || endDate
+                        ? {
+                            createdAt: {
+                                ...(startDate && { gte: startDate }),
+                                ...(endDate && { lte: endDate }),
+                            },
+                        }
+                        : {}),
+                },
+            },
+        });
+
 
         const numberOfOrders = await prisma.order.count({
             where: {
                 paymentStatus: 'PAYED',
-                ...(startDate && { createdAt: { gte: startDate } }),
-                ...(endDate && { createdAt: { lte: endDate } })
-            }
-        })
+                ...(startDate || endDate
+                    ? {
+                        createdAt: {
+                            ...(startDate && { gte: startDate }),
+                            ...(endDate && { lte: endDate }),
+                        },
+                    }
+                    : {}),
+            },
+        });
+
 
         const categoryRevenue = await prisma.$queryRawUnsafe<
             { category: string | null; revenue: number }[]>(`
@@ -96,14 +115,15 @@ export default async function GET(req: NextRequest) {
             numberOfOrders,
             salesByCategory,
             dateRange: {
-                startDate: startDate?.toDateString(),
+                startDate: startDate?.toISOString(),
                 endDate: endDate?.toISOString()
             },
         })
+
     } catch (error) {
         console.error("Dashboard stats error:", error);
         return NextResponse.json(
-            {message: "Internal Server ERROR"}, {status: 500}
+            { message: "Internal Server ERROR" }, { status: 500 }
         )
     }
 }
