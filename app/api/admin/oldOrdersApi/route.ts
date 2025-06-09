@@ -47,23 +47,34 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "One or more products do not exist." }, { status: 400 });
     }
 
-    // Create the order with order items
+    // Create the order with order items // changed havent tried yet
     const order = await prisma.order.create({
       data: {
-        customerId: userId,
-        address,
+        customer: {
+          connect: { customerId: userId }, // ✅ Use relation object with correct field name
+        },
+        address: address,
         paymentStatus: "UNPAID",
         modeOfPayment,
         deliveryStatus: "NOT_SHIPPED",
         items: {
           create: items.map((item: { productId: string; quantity: number }) => ({
-            product: { connect: { product_id: item.productId } }, // Connect to existing product
+            product: {
+              connect: { product_id: item.productId }, // ✅ correct field name from schema
+            },
             quantity: item.quantity,
           })),
         },
       },
-      include: { items: { include: { product: true } } }, // Include product details
+      include: {
+        items: {
+          include: {
+            product: true,
+          },
+        },
+      },
     });
+
 
     return NextResponse.json({ message: "Order created successfully!", order }, { status: 201 });
   } catch (error) {

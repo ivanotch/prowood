@@ -22,7 +22,7 @@ export default function ClientDashboard() {
 
             <SectionCards startDate={startDate} endDate={endDate} />
 
-            <SPCandWPCComparison startDate={startDate} endDate={endDate} />
+            <SPCandWPCComparison />
             <DataTable />
         </div>
     )

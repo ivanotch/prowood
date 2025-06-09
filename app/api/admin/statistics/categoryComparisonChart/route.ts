@@ -39,7 +39,7 @@ export async function GET(req: NextRequest) {
         }
 
         for (const order of orders) {
-            const date = format(order.createdAt, "yyyy-MM-dd");
+            const date = order.createdAt.toISOString().slice(0, 10);
 
             for (const item of order.items) {
                 const category = item.product.category ?? "";
@@ -62,8 +62,8 @@ export async function GET(req: NextRequest) {
             }))
             .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
-        return NextResponse.json({chartData}, {status: 200});
+        return NextResponse.json({ chartData }, { status: 200 });
     } catch (error) {
-        return NextResponse.json({message: 'Internal Server Error'}, {status: 500});
+        return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
     }
 }

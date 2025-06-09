@@ -3,7 +3,7 @@ import prisma from "@/utils/prisma";
 import { authenticateAdmin } from "@/utils/auth";
 
 export async function PATCH(req: Request, {params}: {params: {orderId: string}}) {
-    const admin = await authenticateAdmin(req);
+    const admin = await authenticateAdmin();
     if (!admin) {
         return NextResponse.json({message: "Unauthorized"}, {status: 403});
     }
