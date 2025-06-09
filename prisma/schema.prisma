@@ -17,12 +17,16 @@ datasource db {
 enum PaymentStatus {
   PAYED
   INITIAL_DOWNPAYMENT
+  //unprocessed
   UNPAID
 }
 
 enum DeliveryStatus {
-  NOT_SHIPPED
+  //unprocessed
   PACKED
+  NOT_SHIPPED // to remove
+
+//processing
   SHIPPED
   DELIVERED
   CANCELED

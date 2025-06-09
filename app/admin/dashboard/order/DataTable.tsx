@@ -8,9 +8,91 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react"
+
+export interface Address {
+    apartment: string | null;
+    city: string;
+    country: string;
+    region: string;
+    street: string;
+    zipCode: string;
+    createdAt: string;
+}
+
+export interface Customer {
+    contact: string;
+    createdAt: string;
+    customerId: string;
+    email: string;
+    name: string;
+    password: string;
+}
+
+export interface Product {
+    product_id: string;
+    name: string;
+    description: string;
+    stock: number;
+    pricePerUnit: number;
+    // Add any other fields you might have
+}
+
+export interface OrderItem {
+    orderItemId: string;
+    order_id: string;
+    productId: string;
+    quantity: number;
+    createdAt: string;
+    product: Product;
+}
+
+export interface Order {
+    order_id: string;
+    addressId: string;
+    customerId: string;
+    approvedBy: string;
+    createdAt: string;
+    accomplishedDate: string;
+    deliveryDate: string;
+    deliveryStatus: string;
+    paymentStatus: string;
+    modeOfPayment: string;
+    customer: Customer;
+    address: Address;
+    items: OrderItem[];
+    amount: number;
+}
 
 
-export default function DataTable() {
+
+
+export default function DataTable({ refreshKey }: { refreshKey: number }) {
+
+    const [orders, setOrders] = useState<Order[]>([])
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        const fetchOrders = async () => {
+            setLoading(true)
+            try {
+                const res = await fetch("/api/admin/allOrders/", {
+                    credentials: "include"
+                })
+                const data = await res.json()
+                setOrders(data)
+            } catch (err) {
+                console.error("Error fetching orders", err)
+            } finally {
+                setLoading(false)
+            }
+        }
+
+        fetchOrders()
+    }, [refreshKey])
+
+    console.log(orders)
+
     return (
         <Table>
             <TableCaption>A list of your Order Data.</TableCaption>
@@ -30,32 +112,30 @@ export default function DataTable() {
                 </TableRow>
             </TableHeader>
             <TableBody>
-                <TableRow className="">
-                    <TableCell className="font-medium">INV001</TableCell>
-                    <TableCell>Alice Matsunaga</TableCell>
-                    <TableCell className="whitespace-normal break-words max-w-[200px]">123 Main Street, Malanday Townhomes Marikina City, 1850, Philippines</TableCell>
-                    <TableCell>09173927339</TableCell>
-                    <TableCell><Button size="sm" variant="outline">View</Button></TableCell>
-                    <TableCell>Credit Card</TableCell>
-                    <TableCell>Unpaid</TableCell>
-                    <TableCell>July 31, 2026</TableCell>
-                    <TableCell>Delivered</TableCell>
-                    <TableCell>Completed</TableCell>
-                    <TableCell className="text-right">$250.00</TableCell>
-                </TableRow>
-                <TableRow className="">
-                    <TableCell className="font-medium">INV001</TableCell>
-                    <TableCell>Alice Matsunaga</TableCell>
-                    <TableCell className="whitespace-normal break-words max-w-[200px]">123 Main Street, Malanday Townhomes Marikina City, 1850, Philippines</TableCell>
-                    <TableCell>09173927339</TableCell>
-                    <TableCell><Button size="sm" variant="outline">View</Button></TableCell>
-                    <TableCell>Credit Card</TableCell>
-                    <TableCell>Unpaid</TableCell>
-                    <TableCell>July 31, 2026</TableCell>
-                    <TableCell>Delivered</TableCell>
-                    <TableCell>Completed</TableCell>
-                    <TableCell className="text-right">$250.00</TableCell>
-                </TableRow>
+                {loading ? (
+                    <TableRow>
+                        <TableCell colSpan={11} className="text-center">Loading...</TableCell>
+                    </TableRow>
+                ) : (
+                    orders.map((order, index) => (
+                        <TableRow key={index}>
+                            <TableCell className="whitespace-normal break-words max-w-[100px]">{order.order_id}</TableCell>
+                            <TableCell>{order.customer.name}</TableCell>
+                            <TableCell className="whitespace-normal break-words max-w-[200px]">{order.address.street}, {order.address.city}, {order.address.country}, {order.address.zipCode}  </TableCell>
+                            <TableCell>{order.customer.contact}</TableCell>
+                            <TableCell><Button size="sm" variant="outline">View</Button></TableCell>
+                            <TableCell>{order.modeOfPayment}</TableCell>
+                            <TableCell>{order.paymentStatus}</TableCell>
+                            <TableCell>{new Date(order.deliveryDate).toLocaleDateString()}</TableCell>
+                            <TableCell>{order.deliveryStatus}</TableCell>
+                            {order.deliveryStatus == "DELIVERED" ? <TableCell className="font-xl text-green-900">Completed</TableCell>
+                                :
+                                <TableCell className="font-xl text-red-900">Processing</TableCell>
+                            }
+                            <TableCell className="text-right">₱{order.amount}</TableCell>
+                        </TableRow>
+                    ))
+                )}
             </TableBody>
         </Table>
 
