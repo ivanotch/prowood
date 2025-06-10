@@ -82,8 +82,9 @@ export function DateRangeSelector({
                                         mode="single"
                                         selected={field.value}
                                         onSelect={field.onChange}
+                                        className="rounded-md border shadow-sm"
                                         disabled={(date) => date > new Date()}
-                                        initialFocus
+                                        autoFocus
                                     />
                                 </PopoverContent>
                             </Popover>
@@ -120,7 +121,7 @@ export function DateRangeSelector({
                                         selected={field.value}
                                         onSelect={field.onChange}
                                         disabled={(date) => date > new Date()}
-                                        initialFocus
+                                        autoFocus
                                     />
                                 </PopoverContent>
                             </Popover>
