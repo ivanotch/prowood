@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Table,
   TableBody,
@@ -11,13 +11,47 @@ import {
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button";
 
+type Inventory = {
+  product_id: string;
+  name: string;
+  category: string;
+  description: string;
+  pricePerUnit: string;
+  productImage: string;
+  stock: number;
+  createdAt: Date;
+}
 
 const TabbedTable = () => {
   const [activeTab, setActiveTab] = useState<'inventory' | 'products' | 'records'>('inventory');
+  const [products, setProducts] = useState<Inventory[]>([])
 
+
+  useEffect(() => {
+    const inventory = async () => {
+
+      try {
+        const res = await fetch("/api/products/allProducts/", {
+          credentials: "include"
+        })
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch statistics")
+        }
+
+        const products = await res.json();
+        setProducts(products);
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
+    inventory();
+  }, [])
+
+  console.log(products)
   return (
     <div className="w-full mx-auto py-4">
-      {/* Tabs */}
       <div className="mb-4 p-1 inline-block rounded-md bg-gray-300">
         <button
           className={`rounded-sm px-3  font-inter font-medium ${activeTab === 'inventory'
@@ -38,6 +72,7 @@ const TabbedTable = () => {
         >
           Manage Products
         </button>
+
         <button
           className={`rounded-sm px-3  font-inter font-medium ${activeTab === 'records'
             ? 'bg-white text-black shadow-md'
@@ -64,22 +99,16 @@ const TabbedTable = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow className="">
-              <TableCell className="font-medium">INV001</TableCell>
-              <TableCell>Alice Matsunaga</TableCell>
-              <TableCell className="whitespace-normal break-words max-w-[200px]">123 Main Street, Malanday Townhomes Marikina City, 1850, Philippines</TableCell>
-              <TableCell>09173927339</TableCell>
-              <TableCell><Button size="sm" variant="outline">View</Button></TableCell>
-              <TableCell>Credit Card</TableCell>
-            </TableRow>
-            <TableRow className="">
-              <TableCell className="font-medium">INV001</TableCell>
-              <TableCell>Alice Matsunaga</TableCell>
-              <TableCell className="whitespace-normal break-words max-w-[200px]">123 Main Street, Malanday Townhomes Marikina City, 1850, Philippines</TableCell>
-              <TableCell>09173927339</TableCell>
-              <TableCell><Button size="sm" variant="outline">View</Button></TableCell>
-              <TableCell>Credit Card</TableCell>
-            </TableRow>
+            {products.map((product, index) => (
+              <TableRow key={index} className="">
+                <TableCell className="font-medium">{product.product_id}</TableCell>
+                <TableCell className='max-w-[200px]'>{product.name}</TableCell>
+                <TableCell>₱{product.pricePerUnit}</TableCell>
+                <TableCell>{product.stock}</TableCell>
+                <TableCell><Button size="sm" variant="outline">View</Button></TableCell>
+                <TableCell><Button size="sm" variant="destructive">Delete</Button></TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       )}
@@ -100,23 +129,17 @@ const TabbedTable = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow className="">
-              <TableCell className="font-medium">INV001</TableCell>
-              <TableCell>Alice Matsunaga</TableCell>
-              <TableCell className="whitespace-normal break-words max-w-[200px]">123 Main Street, Malanday Townhomes Marikina City, 1850, Philippines</TableCell>
-              <TableCell>09173927339</TableCell>
-              <TableCell><Button size="sm" variant="outline">View</Button></TableCell>
-              <TableCell>Credit Card</TableCell>
-            </TableRow>
-            <TableRow className="">
-              <TableCell className="font-medium">INV001</TableCell>
-              <TableCell>Alice Matsunaga</TableCell>
-              <TableCell className="whitespace-normal break-words max-w-[200px]">123 Main Street, Malanday Townhomes Marikina City, 1850, Philippines</TableCell>
-              <TableCell>09173927339</TableCell>
-              <TableCell><Button size="sm" variant="outline">View</Button></TableCell>
-              <TableCell>Credit Card</TableCell>
-              <TableCell>Credit Card</TableCell>
-            </TableRow>
+            {products.map((product, index) => (
+              <TableRow key={index} className="">
+                <TableCell className="whitespace-normal break-words min-w-[250px] font-medium">{product.product_id}</TableCell>
+                <TableCell className="whitespace-normal break-words max-w-[200px]">{product.name}</TableCell>
+                <TableCell className="whitespace-normal break-words max-w-[200px]">{product.description}</TableCell>
+                <TableCell>{product.stock}</TableCell>
+                <TableCell>₱{product.pricePerUnit}</TableCell>
+                <TableCell className="whitespace-normal break-words max-w-[200px]">{product.category}</TableCell>
+                <TableCell>{new Date(product.createdAt).toLocaleDateString()}</TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       )}
@@ -127,7 +150,7 @@ const TabbedTable = () => {
           <TableHeader className='bg-gray-100 rounded-lg'>
             <TableRow>
               <TableHead className="w-[100px]">Date</TableHead>
-              <TableHead>Type</TableHead>
+              <TableHead>Transaction Type</TableHead>
               <TableHead>Product</TableHead>
               <TableHead>Quantity</TableHead>
               <TableHead>Notes/Reason</TableHead>
@@ -136,20 +159,20 @@ const TabbedTable = () => {
           </TableHeader>
           <TableBody>
             <TableRow className="">
-              <TableCell className="font-medium">INV001</TableCell>
-              <TableCell>Alice Matsunaga</TableCell>
-              <TableCell className="whitespace-normal break-words max-w-[200px]">123 Main Street, Malanday Townhomes Marikina City, 1850, Philippines</TableCell>
-              <TableCell>09173927339</TableCell>
-              <TableCell><Button size="sm" variant="outline">View</Button></TableCell>
-              <TableCell>Credit Card</TableCell>
+              <TableCell className="font-medium">6/4/2025</TableCell>
+              <TableCell>Stock</TableCell>
+              <TableCell className="whitespace-normal break-words max-w-[200px]">White Oak</TableCell>
+              <TableCell>89</TableCell>
+              <TableCell>Added a stock for WPC White Oak</TableCell>
+              <TableCell>John Doe</TableCell>
             </TableRow>
             <TableRow className="">
-              <TableCell className="font-medium">INV001</TableCell>
-              <TableCell>Alice Matsunaga</TableCell>
-              <TableCell className="whitespace-normal break-words max-w-[200px]">123 Main Street, Malanday Townhomes Marikina City, 1850, Philippines</TableCell>
-              <TableCell>09173927339</TableCell>
-              <TableCell><Button size="sm" variant="outline">View</Button></TableCell>
-              <TableCell>Credit Card</TableCell>
+              <TableCell className="font-medium">6/8/2025</TableCell>
+              <TableCell>Stock</TableCell>
+              <TableCell className="whitespace-normal break-words max-w-[200px]">Black</TableCell>
+              <TableCell>15</TableCell>
+              <TableCell>Deleted a stock for WPC Black</TableCell>
+              <TableCell>John Doe</TableCell>
             </TableRow>
           </TableBody>
         </Table>

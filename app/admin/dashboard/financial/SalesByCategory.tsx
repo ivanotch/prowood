@@ -26,57 +26,58 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-export const description = "An interactive pie chart"
-
-const desktopData = [
-  { month: "january", desktop: 186, fill: "var(--color-january)" },
-  { month: "february", desktop: 305, fill: "var(--color-february)" },
-  { month: "march", desktop: 237, fill: "var(--color-march)" },
-  { month: "april", desktop: 173, fill: "var(--color-april)" },
-  { month: "may", desktop: 209, fill: "var(--color-may)" },
-]
-
-const chartConfig = {
-  visitors: {
-    label: "Visitors",
-  },
-  desktop: {
-    label: "Desktop",
-  },
-  mobile: {
-    label: "Mobile",
-  },
-  january: {
-    label: "January",
-    color: "var(--chart-1)",
-  },
-  february: {
-    label: "February",
-    color: "var(--chart-2)",
-  },
-  march: {
-    label: "March",
-    color: "var(--chart-3)",
-  },
-  april: {
-    label: "April",
-    color: "var(--chart-4)",
-  },
-  may: {
-    label: "May",
-    color: "var(--chart-5)",
-  },
-} satisfies ChartConfig
-
 export function SalesByCategory() {
   const id = "pie-interactive"
-  const [activeMonth, setActiveMonth] = React.useState(desktopData[0].month)
 
+  const colorPalette = [
+  "var(--chart-1)",
+  "var(--chart-2)",
+  "var(--chart-3)",
+  "var(--chart-4)",
+  "var(--chart-5)",
+  "var(--chart-6)",
+]
+
+  const [salesData, setSalesData] = React.useState<
+    { category: string; Sales: number; fill: string }[]
+  >([])
+
+  const [activeCategory, setActiveCategory] = React.useState<string | undefined>(undefined)
+
+ React.useEffect(() => {
+  const fetchData = async () => {
+    const res = await fetch("/api/admin/salesByCategory")
+    const json = await res.json()
+
+    const chartData = json.chartData.map((item: any, index: number) => ({
+      ...item,
+      fill: colorPalette[index % colorPalette.length],
+    }))
+
+    setSalesData(chartData)
+
+    if (chartData.length > 0) {
+      setActiveCategory(chartData[0].category)
+    }
+  }
+
+  fetchData()
+}, [])
   const activeIndex = React.useMemo(
-    () => desktopData.findIndex((item) => item.month === activeMonth),
-    [activeMonth]
+    () => salesData.findIndex((item) => item.category === activeCategory),
+    [salesData, activeCategory]
   )
-  const months = React.useMemo(() => desktopData.map((item) => item.month), [])
+
+  const chartConfig: ChartConfig = React.useMemo(() => {
+    const config: ChartConfig = {}
+    salesData.forEach((item) => {
+      config[item.category] = {
+        label: item.category,
+        color: item.fill,
+      }
+    })
+    return config
+  }, [salesData])
 
   return (
     <Card data-chart={id} className="flex flex-col sm:w-[50%] mt-[1rem] sm:mt-[0rem]">
@@ -84,41 +85,31 @@ export function SalesByCategory() {
       <CardHeader className="flex-row items-start space-y-0 pb-0">
         <div className="grid gap-1">
           <CardTitle>Sales By Category</CardTitle>
-          <CardDescription>January - June 2024</CardDescription>
+          <CardDescription>Last 30 days</CardDescription>
         </div>
-        <Select value={activeMonth} onValueChange={setActiveMonth}>
+        <Select value={activeCategory} onValueChange={setActiveCategory}>
           <SelectTrigger
-            className="ml-auto h-7 w-[130px] rounded-lg pl-2.5"
-            aria-label="Select a value"
+            className="ml-auto h-7 w-[180px] rounded-lg pl-2.5"
+            aria-label="Select category"
           >
-            <SelectValue placeholder="Select month" />
+            <SelectValue placeholder="Select category" />
           </SelectTrigger>
           <SelectContent align="end" className="rounded-xl">
-            {months.map((key) => {
-              const config = chartConfig[key as keyof typeof chartConfig]
-
-              if (!config) {
-                return null
-              }
-
-              return (
-                <SelectItem
-                  key={key}
-                  value={key}
-                  className="rounded-lg [&_span]:flex"
-                >
-                  <div className="flex items-center gap-2 text-xs">
-                    <span
-                      className="flex h-3 w-3 shrink-0 rounded-xs"
-                      style={{
-                        backgroundColor: `var(--color-${key})`,
-                      }}
-                    />
-                    {config?.label}
-                  </div>
-                </SelectItem>
-              )
-            })}
+            {salesData.map((item) => (
+              <SelectItem
+                key={item.category}
+                value={item.category}
+                className="rounded-lg [&_span]:flex"
+              >
+                <div className="flex items-center gap-2 text-xs">
+                  <span
+                    className="flex h-3 w-3 shrink-0 rounded-xs"
+                    style={{ backgroundColor: item.fill }}
+                  />
+                  {item.category}
+                </div>
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </CardHeader>
@@ -134,9 +125,9 @@ export function SalesByCategory() {
               content={<ChartTooltipContent hideLabel />}
             />
             <Pie
-              data={desktopData}
-              dataKey="desktop"
-              nameKey="month"
+              data={salesData}
+              dataKey="Sales"
+              nameKey="category"
               innerRadius={60}
               strokeWidth={5}
               activeIndex={activeIndex}
@@ -156,7 +147,7 @@ export function SalesByCategory() {
             >
               <Label
                 content={({ viewBox }) => {
-                  if (viewBox && "cx" in viewBox && "cy" in viewBox) {
+                  if (viewBox && "cx" in viewBox && "cy" in viewBox && activeIndex >= 0) {
                     return (
                       <text
                         x={viewBox.cx}
@@ -169,14 +160,14 @@ export function SalesByCategory() {
                           y={viewBox.cy}
                           className="fill-foreground text-3xl font-bold"
                         >
-                          {desktopData[activeIndex].desktop.toLocaleString()}
+                          {salesData[activeIndex].Sales.toLocaleString()}
                         </tspan>
                         <tspan
                           x={viewBox.cx}
                           y={(viewBox.cy || 0) + 24}
                           className="fill-muted-foreground"
                         >
-                          Visitors
+                          Sales
                         </tspan>
                       </text>
                     )

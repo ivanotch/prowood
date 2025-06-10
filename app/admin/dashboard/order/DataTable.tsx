@@ -8,6 +8,18 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import { useEffect, useState } from "react"
 
 export interface Address {
@@ -35,6 +47,7 @@ export interface Product {
     description: string;
     stock: number;
     pricePerUnit: number;
+    productImage: string;
     // Add any other fields you might have
 }
 
@@ -63,8 +76,6 @@ export interface Order {
     items: OrderItem[];
     amount: number;
 }
-
-
 
 
 export default function DataTable({ refreshKey }: { refreshKey: number }) {
@@ -123,7 +134,50 @@ export default function DataTable({ refreshKey }: { refreshKey: number }) {
                             <TableCell>{order.customer.name}</TableCell>
                             <TableCell className="whitespace-normal break-words max-w-[200px]">{order.address.street}, {order.address.city}, {order.address.country}, {order.address.zipCode}  </TableCell>
                             <TableCell>{order.customer.contact}</TableCell>
-                            <TableCell><Button size="sm" variant="outline">View</Button></TableCell>
+                            <TableCell>
+                                <AlertDialog>
+                                    <AlertDialogTrigger asChild>
+                                        <Button size="sm" variant="outline">View</Button>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent>
+                                        <AlertDialogHeader>
+                                            <AlertDialogTitle>Customer: {order.customer.name}</AlertDialogTitle>
+                                            <Table>
+                                                <TableHeader>
+                                                    <TableRow>
+                                                        <TableHead>Image</TableHead>
+                                                        <TableHead>Product Name</TableHead>
+                                                        <TableHead>Quantity</TableHead>
+                                                        <TableHead className="text-right">Amount</TableHead>
+                                                    </TableRow>
+                                                </TableHeader>
+                                                <TableBody>
+                                                    {order.items.map((item, index) => (
+                                                        <TableRow key={index}>
+                                                            <TableCell>
+                                                                <Image
+                                                                    src={String(item.product.productImage)}
+                                                                    alt="Product Image"
+                                                                    width={50}
+                                                                    height={50}
+                                                                    className="object-cover max-h-[50px] rounded"
+                                                                />
+                                                            </TableCell>
+                                                            <TableCell>{item.product.name}</TableCell>
+                                                            <TableCell>{item.quantity}</TableCell>
+                                                            <TableCell>{item.quantity * item.product.pricePerUnit}</TableCell>
+                                                        </TableRow>
+                                                    ))}
+                                                </TableBody>
+                                            </Table>
+
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter>
+                                            <AlertDialogAction>Close</AlertDialogAction>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                </AlertDialog>
+                            </TableCell>
                             <TableCell>{order.modeOfPayment}</TableCell>
                             <TableCell>{order.paymentStatus}</TableCell>
                             <TableCell>{new Date(order.deliveryDate).toLocaleDateString()}</TableCell>

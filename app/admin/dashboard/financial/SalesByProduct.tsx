@@ -1,7 +1,15 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import { TrendingUp } from "lucide-react"
-import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from "recharts"
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  LabelList,
+  XAxis,
+  YAxis,
+} from "recharts"
 
 import {
   Card,
@@ -18,36 +26,9 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 
-export const description = "A bar chart with a custom label"
-
-const chartData = [
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
-]
-
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "var(--chart-2)",
-  },
-  mobile: {
-    label: "Mobile",
+  Sales: {
+    label: "Sales",
     color: "var(--chart-2)",
   },
   label: {
@@ -56,11 +37,33 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export function SalesByProduct() {
+  const [chartData, setChartData] = useState<
+    { product: string; Sales: number }[]
+  >([])
+
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchChartData = async () => {
+      try {
+        const res = await fetch("/api/admin/salesByProduct")
+        const json = await res.json()
+        setChartData(json.chartData)
+      } catch (error) {
+        console.error("Failed to fetch chart data:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchChartData()
+  }, [])
+
   return (
     <Card className="sm:w-[50%]">
       <CardHeader>
         <CardTitle>Sales By Product</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardDescription>Last 30 Days</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -68,13 +71,11 @@ export function SalesByProduct() {
             accessibilityLayer
             data={chartData}
             layout="vertical"
-            margin={{
-              right: 16,
-            }}
+            margin={{ right: 16 }}
           >
             <CartesianGrid horizontal={false} />
             <YAxis
-              dataKey="month"
+              dataKey="product"
               type="category"
               tickLine={false}
               tickMargin={10}
@@ -82,26 +83,26 @@ export function SalesByProduct() {
               tickFormatter={(value) => value.slice(0, 3)}
               hide
             />
-            <XAxis dataKey="desktop" type="number" hide />
+            <XAxis dataKey="Sales" type="number" hide />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent indicator="line" />}
             />
             <Bar
-              dataKey="desktop"
+              dataKey="Sales"
               layout="vertical"
-              fill="var(--color-desktop)"
+              fill="var(--color-Sales)"
               radius={4}
             >
               <LabelList
-                dataKey="month"
+                dataKey="product"
                 position="insideLeft"
                 offset={8}
                 className="fill-(--color-label)"
                 fontSize={12}
               />
               <LabelList
-                dataKey="desktop"
+                dataKey="Sales"
                 position="right"
                 offset={8}
                 className="fill-foreground"
@@ -112,12 +113,18 @@ export function SalesByProduct() {
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 leading-none font-medium">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="text-muted-foreground leading-none">
-          Showing total visitors for the last 6 months
-        </div>
+        {loading ? (
+          <div className="text-muted-foreground">Loading data...</div>
+        ) : (
+          <>
+            <div className="flex gap-2 leading-none font-medium">
+              Trending up by 5.2% this product <TrendingUp className="h-4 w-4" />
+            </div>
+            <div className="text-muted-foreground leading-none">
+              Showing total sales for the last 30 days
+            </div>
+          </>
+        )}
       </CardFooter>
     </Card>
   )

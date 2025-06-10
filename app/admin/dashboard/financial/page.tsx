@@ -2,10 +2,10 @@
 import { SidebarInset } from "@/components/ui/sidebar"
 import { SiteHeader } from "@/components/site-header"
 import FinancialKPI from "./FinancialKPI"
-import { RevenueAndExpenseChart } from "./RevenueAndExpense"
+import { RevenueVsInventory } from "./RevenueAndExpense"
 import { SalesByProduct } from "./SalesByProduct"
 import { SalesByCategory } from "./SalesByCategory"
-import CashFlow  from "./CashFlow"
+// import CashFlow  from "./CashFlow"
 
 export default function Financial() {
     return (
@@ -18,16 +18,16 @@ export default function Financial() {
 
                             <FinancialKPI />
                             <div className="px-4 lg:px-6">
-                                <RevenueAndExpenseChart />
+                                <RevenueVsInventory />
                             </div>
 
                             <div className="px-4 gap-3 sm:flex lg:px-6">
                                 <SalesByProduct />
                                 <SalesByCategory />
                             </div>
-                            <div className="px-4 lg:px-6">
+                            {/* <div className="px-4 lg:px-6">
                                 <CashFlow />
-                            </div>
+                            </div> */}
                         </div>
 
                     </div>
