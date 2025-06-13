@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { Button } from "@/components/ui/button";
+import InventoryTable from './TableRow';
 
 type Inventory = {
   product_id: string;
@@ -25,6 +25,7 @@ type Inventory = {
 const TabbedTable = () => {
   const [activeTab, setActiveTab] = useState<'inventory' | 'products' | 'records'>('inventory');
   const [products, setProducts] = useState<Inventory[]>([])
+
 
 
   useEffect(() => {
@@ -100,14 +101,7 @@ const TabbedTable = () => {
           </TableHeader>
           <TableBody>
             {products.map((product, index) => (
-              <TableRow key={index} className="">
-                <TableCell className="font-medium">{product.product_id}</TableCell>
-                <TableCell className='max-w-[200px]'>{product.name}</TableCell>
-                <TableCell>₱{product.pricePerUnit}</TableCell>
-                <TableCell>{product.stock}</TableCell>
-                <TableCell><Button size="sm" variant="outline">View</Button></TableCell>
-                <TableCell><Button size="sm" variant="destructive">Delete</Button></TableCell>
-              </TableRow>
+              <InventoryTable key={index} product={product} index={index} />
             ))}
           </TableBody>
         </Table>

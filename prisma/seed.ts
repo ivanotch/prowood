@@ -35,6 +35,7 @@ async function main() {
       contact: "987654321",
       email: "alice@example.com",
       password: hashedPassword,
+      isVerified: true,
     },
   });
 
@@ -346,6 +347,7 @@ async function main() {
       contact: "111222333",
       email: "bob@example.com",
       password: hashedPassword,
+      isVerified: true,
     },
   });
   const customer3 = await prisma.customer.create({
@@ -354,6 +356,7 @@ async function main() {
       contact: "444555666",
       email: "carol@example.com",
       password: hashedPassword,
+      isVerified: true,
     },
   });
 

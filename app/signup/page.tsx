@@ -42,7 +42,8 @@ export default function Signup() {
                 console.log(data)
                 setError(data.error)
             } else {
-                router.push('/login');
+                localStorage.setItem("verificationEmail", email);
+                router.push('/signup/verify/');
             }
 
         } catch(err) {

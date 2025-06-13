@@ -53,6 +53,7 @@ model Customer {
   email      String @unique
   password   String // Hashed password
   createdAt DateTime @default(now())
+  isVerified Boolean @default(false)
 
   orders Order[]
   carts  Cart[]
@@ -148,3 +149,11 @@ model Address {
 
   order Order[]
 }
+
+model VerificationCode {
+  id         String   @id @default(uuid())
+  email      String   @unique
+  code       String
+  expiresAt  DateTime
+}
+

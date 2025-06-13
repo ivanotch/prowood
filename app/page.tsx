@@ -4,10 +4,12 @@ import { FaOpencart } from "react-icons/fa6";
 import gsap from "gsap";
 import { useEffect, useRef } from "react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
+import { redirect } from 'next/navigation'
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
+
+  redirect('/shop')
 
   const leftside = useRef<HTMLDivElement>(null);
   const rightside = useRef<HTMLDivElement>(null);
@@ -78,7 +80,7 @@ export default function Home() {
     // });
 
     return () => ScrollTrigger.getAll().forEach((st) => st.kill());
-    
+
 
 
   }, []);
@@ -87,7 +89,7 @@ export default function Home() {
   return (
     <div>
       <main>
-      <div className="h-screen pt-[1.5rem]">  {/*ref={videoRef} */}
+        <div className="h-screen pt-[1.5rem]">  {/*ref={videoRef} */}
           <div id="hero" className="rounded-lg pt-[1rem] relative w-full h-[100%] overflow-hidden">
             <div id="hero-nav" className="flex justify-between h-[2rem] items-center">
               <div className="flex text-white font-inter gap-6 ml-[1rem]">
@@ -116,7 +118,7 @@ export default function Home() {
               loop
               muted
               playsInline
-              
+
               className="absolute top-0 left-0 w-full h-full object-cover z-[-1]"
             >
               <source src="/video.mp4" type="video/mp4" />
