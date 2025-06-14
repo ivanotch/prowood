@@ -4,6 +4,7 @@ import { DateRangeSelector } from "@/components/calendar";
 import { useState } from "react";
 import DataTable from "./DataTable";
 import { Button } from "@/components/ui/button";
+import OrderUi from "./OrderUI";
 
 export default function ClientDashboard() {
     const [startDate, setStartDate] = useState<string | undefined>();
@@ -13,7 +14,6 @@ export default function ClientDashboard() {
     const handleOrderAdded = () => {
         setRefreshKey(prev => prev + 1) // This will trigger DataTable to refetch
     }
-
 
     return (
         <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 px-4 lg:px-6">
@@ -26,8 +26,7 @@ export default function ClientDashboard() {
             <SectionCards startDate={startDate} endDate={endDate} />
 
             <div className="px-4 lg:px-6">
-                <Button onClick={handleOrderAdded} variant="default" className="mb-[1rem]" size="sm">Add Order</Button>
-
+                <OrderUi handleOrderAdded={handleOrderAdded} /> 
                 <DataTable refreshKey={refreshKey} />
             </div>
 
