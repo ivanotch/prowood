@@ -39,7 +39,6 @@ export default function Signup() {
             if (!res.ok) {
                 const data = await res.json();
                 console.log(data.error);
-                console.log(data)
                 setError(data.error)
             } else {
                 localStorage.setItem("verificationEmail", email);
