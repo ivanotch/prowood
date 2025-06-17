@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import EditOrder from "./EditOrder";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -120,6 +121,8 @@ export default function DataTable({ refreshKey }: { refreshKey: number }) {
                     <TableHead>Delivery Status</TableHead>
                     <TableHead>Order Status</TableHead>
                     <TableHead className="text-right">Amount</TableHead>
+                    <TableHead>Edit</TableHead>
+
                 </TableRow>
             </TableHeader>
             <TableBody>
@@ -187,6 +190,16 @@ export default function DataTable({ refreshKey }: { refreshKey: number }) {
                                 <TableCell className="font-xl text-red-900">Processing</TableCell>
                             }
                             <TableCell className="text-right">₱{order.amount}</TableCell>
+                            <TableCell className="font-bold">
+                                <EditOrder
+                                    deliveryDate={new Date(order.deliveryDate)}
+                                    deliveryStatus={order.deliveryStatus}
+                                    paymentStatus={order.paymentStatus}
+                                    modeOfPayment={order.modeOfPayment}
+                                    customer={order.customer.name} 
+                                />
+                            </TableCell>
+
                         </TableRow>
                     ))
                 )}
