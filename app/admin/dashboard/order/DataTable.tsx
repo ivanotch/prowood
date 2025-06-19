@@ -79,7 +79,7 @@ export interface Order {
 }
 
 
-export default function DataTable({ refreshKey }: { refreshKey: number }) {
+export default function DataTable({ refreshKey, onRefresh }: { refreshKey: number, onRefresh: () => void }) {
 
     const [orders, setOrders] = useState<Order[]>([])
     const [loading, setLoading] = useState(true)
@@ -192,6 +192,8 @@ export default function DataTable({ refreshKey }: { refreshKey: number }) {
                             <TableCell className="text-right">₱{order.amount}</TableCell>
                             <TableCell className="font-bold">
                                 <EditOrder
+                                    onRefresh={onRefresh}
+                                    id={order.order_id}
                                     deliveryDate={new Date(order.deliveryDate)}
                                     deliveryStatus={order.deliveryStatus}
                                     paymentStatus={order.paymentStatus}

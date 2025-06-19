@@ -27,7 +27,7 @@ export default function ClientDashboard() {
 
             <div className="px-4 lg:px-6">
                 <OrderUi handleOrderAdded={handleOrderAdded} /> 
-                <DataTable refreshKey={refreshKey} />
+                <DataTable refreshKey={refreshKey} onRefresh={() => setRefreshKey(prev => prev + 1)} />
             </div>
 
         </div>
