@@ -22,7 +22,7 @@ type Inventory = {
   createdAt: Date;
 }
 
-const TabbedTable = () => {
+const TabbedTable = ({ refreshKey, onRefresh }: { refreshKey: number, onRefresh: () => void }) => {
   const [activeTab, setActiveTab] = useState<'inventory' | 'products' | 'records'>('inventory');
   const [products, setProducts] = useState<Inventory[]>([])
 
@@ -48,7 +48,7 @@ const TabbedTable = () => {
     }
 
     inventory();
-  }, [])
+  }, [refreshKey])
 
   console.log(products)
   return (
@@ -101,7 +101,7 @@ const TabbedTable = () => {
           </TableHeader>
           <TableBody>
             {products.map((product, index) => (
-              <InventoryTable key={index} product={product} index={index} />
+              <InventoryTable key={index} product={product} onRefresh={onRefresh} />
             ))}
           </TableBody>
         </Table>
