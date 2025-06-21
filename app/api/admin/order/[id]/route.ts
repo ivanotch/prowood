@@ -5,7 +5,7 @@ import prisma from "@/utils/prisma";
 
 
 export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
-    const admin = authenticateAdmin()
+    const admin = await authenticateAdmin()
 
     if (!admin) {
         return NextResponse.json({ message: "Unauthorized" }, { status: 400 })

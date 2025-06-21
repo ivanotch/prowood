@@ -10,6 +10,9 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import InventoryTable from './TableRow';
+import { HiDotsHorizontal } from "react-icons/hi";
+import EditProduct from './EditProduct';
+
 
 type Inventory = {
   product_id: string;
@@ -120,6 +123,7 @@ const TabbedTable = ({ refreshKey, onRefresh }: { refreshKey: number, onRefresh:
               <TableHead>Price Per Unit</TableHead>
               <TableHead>Category</TableHead>
               <TableHead>Added on</TableHead>
+              <TableHead>Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -132,6 +136,14 @@ const TabbedTable = ({ refreshKey, onRefresh }: { refreshKey: number, onRefresh:
                 <TableCell>₱{product.pricePerUnit}</TableCell>
                 <TableCell className="whitespace-normal break-words max-w-[200px]">{product.category}</TableCell>
                 <TableCell>{new Date(product.createdAt).toLocaleDateString()}</TableCell>
+                <TableCell><EditProduct
+                  productId={product.product_id}
+                  name={product.name}
+                  description={product.description}
+                  pricePerUnit={Number(product.pricePerUnit)}
+                  category={product.category}
+                />
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
