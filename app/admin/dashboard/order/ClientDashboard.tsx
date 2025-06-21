@@ -17,16 +17,18 @@ export default function ClientDashboard() {
 
     return (
         <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6 px-4 lg:px-6">
-            <DateRangeSelector
-                onDateChange={({ startDate, endDate }) => {
-                    setStartDate(startDate)
-                    setEndDate(endDate)
-                }} />
+            <div className="print:hidden">
+                <DateRangeSelector
+                    onDateChange={({ startDate, endDate }) => {
+                        setStartDate(startDate)
+                        setEndDate(endDate)
+                    }} />
 
+            </div>
             <SectionCards startDate={startDate} endDate={endDate} />
 
             <div className="px-4 lg:px-6">
-                <OrderUi handleOrderAdded={handleOrderAdded} /> 
+                <OrderUi handleOrderAdded={handleOrderAdded} />
                 <DataTable refreshKey={refreshKey} onRefresh={() => setRefreshKey(prev => prev + 1)} />
             </div>
 

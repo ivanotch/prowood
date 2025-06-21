@@ -58,7 +58,7 @@ export async function AppSidebar({admin}: {admin: AdminInfo | null}) {
     console.log(admin)
     
     return (
-        <Sidebar>
+        <Sidebar className="print:hidden">
             <SidebarContent>
                 <SidebarHeader>
                     <SidebarMenu>
