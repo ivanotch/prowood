@@ -3,7 +3,8 @@ import prisma from "@/utils/prisma";
 import { authenticateAdmin } from "@/utils/auth";
 
 // ✅ DELETE: Admin deletes an order by ID
-export async function DELETE(req: Request, { params }: { params: { orderId: string } }) {
+export async function DELETE(req: Request, props: { params: Promise<{ orderId: string }> }) {
+  const params = await props.params;
   const admin = await authenticateAdmin(req);  // Ensure admin authentication
   if (!admin) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });

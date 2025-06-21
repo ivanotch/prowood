@@ -1,3 +1,5 @@
+
+
 import {
     Dialog,
     DialogContent,
@@ -52,7 +54,7 @@ export default function EditProduct(product: Product) {
                 method: 'PUT',
                 credentials: 'include',
                 headers: { "Content-type": "application/json" },
-                body: JSON.stringify({ edit })
+                body: JSON.stringify(edit)
             })
 
             if (!res.ok) {
@@ -68,7 +70,6 @@ export default function EditProduct(product: Product) {
             console.error("Error editing product:", error);
         }
     }
-
     return (
         <Dialog>
             <DialogTrigger className="p-2">

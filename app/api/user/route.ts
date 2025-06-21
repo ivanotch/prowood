@@ -6,7 +6,7 @@ import { NextResponse } from "next/server";
 const SECRET_KEY = process.env.JWT_SECRET || 'ivanpogi'
 
 export async function GET() {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const token = (await cookieStore).get('auth_token')?.value
 
     if (!token) {

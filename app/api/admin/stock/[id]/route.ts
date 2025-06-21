@@ -2,7 +2,8 @@ import { authenticateAdmin } from "@/utils/auth";
 import prisma from "@/utils/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(req: NextRequest, props: { params: Promise<{ id: string }> }) {
+    const params = await props.params;
     const admin = await authenticateAdmin()
 
     if (!admin) {

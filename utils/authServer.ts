@@ -10,7 +10,7 @@ interface DecodedUser extends JwtPayload {
 }
 
 export default async function getUserFromServer() {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const token = (await cookieStore).get('auth_token')?.value;
 
     if (!token) return null;
