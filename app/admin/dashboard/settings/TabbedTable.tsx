@@ -11,12 +11,14 @@ import {
 } from "@/components/ui/table";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Divide } from "lucide-react";
 
 type Customer = {
     customerId: string;
     name: string;
     contact: string;
     email: string;
+    isBanned: boolean;
     isVerified: boolean;
 }
 
@@ -25,6 +27,7 @@ type Admin = {
     name: string;
     contact: string;
     email: string;
+    isBanned: boolean;
     role: string;
 }
 
@@ -68,13 +71,54 @@ export default function TabbedTable({ category }: { category: string }) {
         getUsers();
     }, [])
 
-    const handleBanCustomer = () => {
-        
-    }
+    const handleBanCustomer = async (customerId: string, currentStatus: boolean) => {
+        try {
+            const res = await fetch(`/api/admin/user/customer/${customerId}/ban`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ isBanned: !currentStatus }),
+            });
 
-    const handleBanAdmin = () => {
-        
-    }
+            if (res.ok) {
+                setCustomers(prev =>
+                    prev.map(c =>
+                        c.customerId === customerId ? { ...c, isBanned: !currentStatus } : c
+                    )
+                );
+            } else {
+                console.error("Failed to update customer ban status");
+            }
+        } catch (error) {
+            console.error("Error banning customer", error);
+        }
+    };
+
+    const handleBanAdmin = async (adminId: string, currentStatus: boolean) => {
+        try {
+            const res = await fetch(`/api/admin/user/admins/${adminId}/ban`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ isBanned: !currentStatus }),
+            });
+
+            if (res.ok) {
+                setAdmins(prev =>
+                    prev.map(a =>
+                        a.adminId === adminId ? { ...a, isBanned: !currentStatus } : a
+                    )
+                );
+            } else {
+                console.error("Failed to update admin ban status");
+            }
+        } catch (error) {
+            console.error("Error banning admin", error);
+        }
+    };
+
 
     return (
         <div>
@@ -88,6 +132,8 @@ export default function TabbedTable({ category }: { category: string }) {
                             <TableHead>Email</TableHead>
                             <TableHead>Contact</TableHead>
                             <TableHead className="text-right">Status</TableHead>
+                            <TableHead>Account</TableHead>
+
                             <TableHead className="">Action</TableHead>
                         </TableRow>
                     </TableHeader>
@@ -104,7 +150,16 @@ export default function TabbedTable({ category }: { category: string }) {
                                     <TableCell>{customer.email}</TableCell>
                                     <TableCell>{customer.contact ? customer.contact : "no contact"}</TableCell>
                                     <TableCell className="text-right">{customer.isVerified ? "Verified" : "Unverified"}</TableCell>
-                                    <TableCell><Button variant='destructive' size='sm' className="text-right text-[0.8rem]">Ban</Button></TableCell>
+                                    <TableCell>{customer.isBanned ? <div className="text-red-900">Banned</div> : <div className="text-green-900">Permitted</div>}</TableCell>
+                                    <TableCell><Button
+                                        variant='destructive'
+                                        size='sm'
+                                        className="text-right text-[0.8rem]"
+                                        onClick={() => handleBanCustomer(customer.customerId, customer.isBanned)}
+                                    >
+                                        {customer.isBanned ? "Unban" : "Ban"}
+                                    </Button>
+                                    </TableCell>
 
                                 </TableRow>
                             ))
@@ -127,6 +182,7 @@ export default function TabbedTable({ category }: { category: string }) {
                             <TableHead>Email</TableHead>
                             <TableHead>Contact</TableHead>
                             <TableHead>Role</TableHead>
+                            <TableHead>Account</TableHead>
                             <TableHead className="">Action</TableHead>
                         </TableRow>
                     </TableHeader>
@@ -143,7 +199,15 @@ export default function TabbedTable({ category }: { category: string }) {
                                     <TableCell>{admin.email}</TableCell>
                                     <TableCell>{admin.contact ? admin.contact : "no contact"}</TableCell>
                                     <TableCell>{admin.role}</TableCell>
-                                    <TableCell><Button variant='destructive' size='sm' className="text-right text-[0.8rem]">Ban</Button></TableCell>
+                                    <TableCell>{admin.isBanned ? <div className="text-red-900">Banned</div> : <div className="text-green-900">Permitted</div>}</TableCell>
+                                    <TableCell><Button
+                                        variant='destructive'
+                                        size='sm'
+                                        className="text-right text-[0.8rem]"
+                                        onClick={() => handleBanAdmin(admin.adminId, admin.isBanned)}
+                                    >
+                                        {admin.isBanned ? "Unban" : "Ban"}
+                                    </Button></TableCell>
 
                                 </TableRow>
                             ))

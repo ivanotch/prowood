@@ -2,6 +2,7 @@
 import { IoReturnUpBackSharp } from "react-icons/io5";
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
+import { Button } from "@/components/ui/button";
 
 
 // prevent user from accessing login page if still logged in. ?
@@ -10,24 +11,33 @@ export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    const [error, setError] = useState("")
+    const [loading, setLoading] = useState(false)
+
     const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setLoading(true);
+        setError("");
+
         try {
-            const res = await fetch("/api/auth/login/", {
+            const res = await fetch("/api/auth/login", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password })
-            })
+            });
+
+            const data = await res.json();
 
             if (!res.ok) {
-                const data = await res.json();
-                console.log(data.error);
+                setError(data.message || "Login failed");
             } else {
-                console.log('workingg');
                 router.push('/shop');
             }
         } catch (error) {
-            console.error("An unexpected error occurred haha:", error);
+            console.error("An unexpected error occurred:", error);
+            setError("Unexpected error. Try again.");
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -86,12 +96,12 @@ export default function Login() {
                     </div>
 
                     {/* Submit Button */}
-                    <button
-                        type="submit"
-                        className="w-[8rem] mt-4 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition duration-200 font-semibold"
-                    >
-                        Log in
-                    </button>
+                    {error && <p className="text-red-500 text-sm">{error}</p>}
+                    <div className="flex flex-col gap-3">
+                        <Button type="submit" size='lg' className="w-full" disabled={loading}>
+                            {loading ? "Logging in..." : "Login"}
+                        </Button>
+                    </div>
                 </form>
             </div>
 

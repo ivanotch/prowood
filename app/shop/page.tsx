@@ -74,7 +74,6 @@ export default function Home() {
                         <div id="hero-nav" className="flex justify-between h-[2rem] items-center">
                             <div className="flex text-white font-inter gap-6 ml-[1rem]">
                                 <a href="/">HOME</a>
-                                <a href="">ABOUT US</a>
                             </div>
 
                             <div className="font-epilogue font-bold text-[#720D1C] text-[1.5rem]">
@@ -149,27 +148,64 @@ export default function Home() {
 
                     {/* Product Cards */}
                     <div className="grid grid-cols-1 md:grid-cols-3 w-[100%] gap-5">
-                        {[1, 2, 3].map((_, index) => (
-                            <div
-                                key={index}
-                                className="bg-gray-100 p-4 rounded-2xl mx-[auto] shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col items-center"
-                            >
-                                <Image
-                                    src="/SPC-W.jpg"
-                                    alt="SPC Walnut"
-                                    width={300}
-                                    height={300}
-                                    className="rounded-lg object-cover"
-                                />
-                                <div className="mt-4 w-full text-center">
-                                    <p className="text-lg font-semibold">SPC Walnut</p>
-                                    <p className="text-gray-600 text-md mt-1">$99</p>
-                                    <button className="mt-4 w-full bg-main text-white py-2 rounded-lg hover:bg-transparent hover:text-main hover:border-2 hover:border-main transition-colors duration-200">
-                                        Add to Cart
-                                    </button>
-                                </div>
+
+                        <div
+                            className="bg-gray-100 p-4 rounded-2xl mx-[auto] shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col items-center"
+                        >
+                            <Image
+                                src="/SPC-W.jpg"
+                                alt="SPC Walnut"
+                                width={300}
+                                height={300}
+                                className="rounded-lg object-cover"
+                            />
+                            <div className="mt-4 w-full text-center">
+                                <p className="text-lg font-semibold">SPC Walnut</p>
+                                <p className="text-gray-600 text-md mt-1">$99</p>
+                                <button className="mt-4 w-full bg-main text-white py-2 rounded-lg hover:bg-transparent hover:text-main hover:border-2 hover:border-main transition-colors duration-200">
+                                    Add to Cart
+                                </button>
                             </div>
-                        ))}
+                        </div>
+
+                        <div
+                            className="bg-gray-100 p-4 rounded-2xl mx-[auto] shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col items-center"
+                        >
+                            <Image
+                                src="/SPC-AG.jpg"
+                                alt="SPC Ash Gray"
+                                width={300}
+                                height={300}
+                                className="rounded-lg object-cover"
+                            />
+                            <div className="mt-4 w-full text-center">
+                                <p className="text-lg font-semibold">SPC Ash Gray</p>
+                                <p className="text-gray-600 text-md mt-1">$99</p>
+                                <button className="mt-4 w-full bg-main text-white py-2 rounded-lg hover:bg-transparent hover:text-main hover:border-2 hover:border-main transition-colors duration-200">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+
+                        <div
+                            className="bg-gray-100 p-4 rounded-2xl mx-[auto] shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col items-center"
+                        >
+                            <Image
+                                src="/SPC-O.jpg"
+                                alt="SPC OAK"
+                                width={300}
+                                height={300}
+                                className="rounded-lg object-cover"
+                            />
+                            <div className="mt-4 w-full text-center">
+                                <p className="text-lg font-semibold">SPC OAK</p>
+                                <p className="text-gray-600 text-md mt-1">$99</p>
+                                <button className="mt-4 w-full bg-main text-white py-2 rounded-lg hover:bg-transparent hover:text-main hover:border-2 hover:border-main transition-colors duration-200">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
@@ -259,27 +295,63 @@ export default function Home() {
 
                     {/* Product Cards */}
                     <div className="grid grid-cols-1 md:grid-cols-3 w-[100%] gap-5">
-                        {[1, 2, 3].map((_, index) => (
-                            <div
-                                key={index}
-                                className="bg-gray-100 p-2 rounded-2xl mx-[auto] w-[20rem] shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col items-center"
-                            >
-                                <Image
-                                    src="/SPC-W.jpg"
-                                    alt="SPC Walnut"
-                                    width={300}
-                                    height={300}
-                                    className="rounded-lg object-cover"
-                                />
-                                <div className="mt-4 w-full text-center">
-                                    <p className="text-lg font-semibold">SPC Walnut</p>
-                                    <p className="text-gray-600 text-md mt-1">$99</p>
-                                    <button className="mt-4 w-full bg-main text-white py-2 rounded-lg hover:bg-transparent hover:text-main hover:border-2 hover:border-main transition-colors duration-200">
-                                        Add to Cart
-                                    </button>
-                                </div>
+
+                        <div
+                            className="bg-gray-100 p-2 rounded-2xl mx-[auto] w-[20rem] shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col items-center"
+                        >
+                            <Image
+                                src="/WPC-W.jpg"
+                                alt="WPC Walnut"
+                                width={300}
+                                height={300}
+                                className="rounded-lg object-cover"
+                            />
+                            <div className="mt-4 w-full text-center">
+                                <p className="text-lg font-semibold">WPC Walnut</p>
+                                <p className="text-gray-600 text-md mt-1">$99</p>
+                                <button className="mt-4 w-full bg-main text-white py-2 rounded-lg hover:bg-transparent hover:text-main hover:border-2 hover:border-main transition-colors duration-200">
+                                    Add to Cart
+                                </button>
                             </div>
-                        ))}
+                        </div>
+
+                        <div
+                            className="bg-gray-100 p-2 rounded-2xl mx-[auto] w-[20rem] shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col items-center"
+                        >
+                            <Image
+                                src="/WPC-EO.jpg"
+                                alt="WPC EO"
+                                width={300}
+                                height={300}
+                                className="rounded-lg object-cover"
+                            />
+                            <div className="mt-4 w-full text-center">
+                                <p className="text-lg font-semibold">WPC European Oak</p>
+                                <p className="text-gray-600 text-md mt-1">$99</p>
+                                <button className="mt-4 w-full bg-main text-white py-2 rounded-lg hover:bg-transparent hover:text-main hover:border-2 hover:border-main transition-colors duration-200">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+
+                        <div
+                            className="bg-gray-100 p-2 rounded-2xl mx-[auto] w-[20rem] shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col items-center"
+                        >
+                            <Image
+                                src="/WPC-DW.jpg"
+                                alt="WPC Dark Walnut"
+                                width={300}
+                                height={300}
+                                className="rounded-lg object-cover"
+                            />
+                            <div className="mt-4 w-full text-center">
+                                <p className="text-lg font-semibold">WPC Dark Walnut</p>
+                                <p className="text-gray-600 text-md mt-1">$99</p>
+                                <button className="mt-4 w-full bg-main text-white py-2 rounded-lg hover:bg-transparent hover:text-main hover:border-2 hover:border-main transition-colors duration-200">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -310,27 +382,63 @@ export default function Home() {
 
                     {/* Product Cards */}
                     <div className="grid grid-cols-1 md:grid-cols-3 w-[100%] gap-5">
-                        {[1, 2, 3].map((_, index) => (
+                        
                             <div
-                                key={index}
                                 className="mx-[auto] bg-gray-100 p-4 rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col items-center"
                             >
                                 <Image
-                                    src="/SPC-W.jpg"
-                                    alt="SPC Walnut"
+                                    src="/WPC-OUTDOOR-EP.jpg"
+                                    alt="WPC-OUTDOOR European Pine"
                                     width={300}
                                     height={300}
                                     className="rounded-lg object-cover"
                                 />
                                 <div className="mt-4 w-full text-center">
-                                    <p className="text-lg font-semibold">SPC Walnut</p>
+                                    <p className="text-lg font-semibold">WPC-OUTDOOR European Pine</p>
                                     <p className="text-gray-600 text-md mt-1">$99</p>
                                     <button className="mt-4 w-full bg-main text-white py-2 rounded-lg hover:bg-transparent hover:text-main hover:border-2 hover:border-main transition-colors duration-200">
                                         Add to Cart
                                     </button>
                                 </div>
                             </div>
-                        ))}
+
+                            <div
+                                className="mx-[auto] bg-gray-100 p-4 rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col items-center"
+                            >
+                                <Image
+                                    src="/WPC-OUTDOOR-TEAK.jpg"
+                                    alt="WPC-OUTDOOR TEAK"
+                                    width={300}
+                                    height={300}
+                                    className="rounded-lg object-cover"
+                                />
+                                <div className="mt-4 w-full text-center">
+                                    <p className="text-lg font-semibold">WPC OUTDOOR TEAK</p>
+                                    <p className="text-gray-600 text-md mt-1">$99</p>
+                                    <button className="mt-4 w-full bg-main text-white py-2 rounded-lg hover:bg-transparent hover:text-main hover:border-2 hover:border-main transition-colors duration-200">
+                                        Add to Cart
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div
+                                className="mx-[auto] bg-gray-100 p-4 rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col items-center"
+                            >
+                                <Image
+                                    src="/WPC-OUTDOOR-GM.jpg"
+                                    alt="WPC-OUTDOOR GOLDEN MAPLE"
+                                    width={300}
+                                    height={300}
+                                    className="rounded-lg object-cover"
+                                />
+                                <div className="mt-4 w-full text-center">
+                                    <p className="text-lg font-semibold">WPC OUTDOOR GOLDEN MAPLE</p>
+                                    <p className="text-gray-600 text-md mt-1">$99</p>
+                                    <button className="mt-4 w-full bg-main text-white py-2 rounded-lg hover:bg-transparent hover:text-main hover:border-2 hover:border-main transition-colors duration-200">
+                                        Add to Cart
+                                    </button>
+                                </div>
+                            </div>
                     </div>
                 </div>
 

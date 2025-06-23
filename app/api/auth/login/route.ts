@@ -26,13 +26,17 @@ export async function POST(req: Request) {
             return NextResponse.json({ message: "User Does not Exist." }, { status: 400 });
         }
 
+        if (user.isBanned) {
+            return NextResponse.json({ message: "Your account has been banned." }, { status: 403 });
+        }
+
         const passwordMatch = await bcrypt.compare(password, user.password);
         if (!passwordMatch) {
             return NextResponse.json({ message: "Invalid Credentials." }, { status: 400 });
         }
 
         // If credentials are correct, generate a token
-        const token = jwt.sign({ userId: user.customerId, email: user.email, name:user.name, address: user.address, contact: user.contact}, SECRET_KEY, { expiresIn: '1d' });
+        const token = jwt.sign({ userId: user.customerId, email: user.email, name: user.name, address: user.address, contact: user.contact }, SECRET_KEY, { expiresIn: '1d' });
 
         // Set the token in an HttpOnly cookie
         const res = NextResponse.json({ message: "Login Successful.", user: { id: user.customerId, name: user.name, email: user.email, contact: user.contact, address: user.address } }, { status: 200 });

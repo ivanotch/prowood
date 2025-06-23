@@ -45,7 +45,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
       setLoading(false)
     }
   }
-
+ 
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -79,9 +79,6 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
               <div className="flex flex-col gap-3">
                 <Button type="submit" className="w-full" disabled={loading}>
                   {loading ? "Logging in..." : "Login"}
-                </Button>
-                <Button variant="outline" className="w-full">
-                  Login with Google
                 </Button>
               </div>
             </div>
