@@ -97,7 +97,7 @@ export function NavAdmin({ admin }: { admin: AdminInfo | null }) {
                                 </div>
                             </div>
                         </DropdownMenuLabel>
-                        <DropdownMenuSeparator />
+                        {/* <DropdownMenuSeparator />
                         <DropdownMenuGroup>
                             <DropdownMenuItem>
                                 Account
@@ -109,7 +109,7 @@ export function NavAdmin({ admin }: { admin: AdminInfo | null }) {
                                 Notifications
                             </DropdownMenuItem>
                         </DropdownMenuGroup>
-                        <DropdownMenuSeparator />
+                        <DropdownMenuSeparator /> */}
                         <DropdownMenuItem onClick={handleLogout}>
                             Log out
                         </DropdownMenuItem>

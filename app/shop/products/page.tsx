@@ -19,7 +19,7 @@ export default function Products() {
         category: string;
 
     }
-    
+
 
     const [products, setProducts] = useState<{ products: Product[] }>({ products: [] })
 
@@ -45,16 +45,31 @@ export default function Products() {
         <main className="pt-[1rem] flex flex-col">
             <Nav />
 
-            <div className="flex flex-col items-center mt-[5rem]">
-                <div className="w-[50%] h-[3rem] rounded-[5px] bg-blue-300 mb-[2rem]">
-                    <div className="w-full h-full flex justify-around items-center">
-                        <button onClick={() => setFilter("")} className="font-[500] text-[1.2rem] p-[0.5rem] border-2">All</button>
-                        <button onClick={() => setFilter("Indoor Wood Plastic Composite")} className="font-[500] text-[1.2rem] p-[0.5rem]">Indoor WPC</button>
-                        <button onClick={() => setFilter("Outdoor Wood Plastic Composite")} className="font-[500] text-[1.2rem] p-[0.5rem]">Outdoor WPC</button>
-                        <button onClick={() => setFilter("Indoor Columns Wood Plastic Composite")} className="font-[500] text-[1.2rem] p-[0.5rem]">WPC Columns</button>
-                        <button onClick={() => setFilter("Stone Plastic Composite")} className="font-[500] text-[1.2rem] p-[0.5rem]">SPC Flooring</button>
+            <div className="flex flex-col items-center mt-[3rem]">
+
+                <div className="flex w-[90%] justify-between p-5 items-center">
+                    <div className="flex flex-col">
+                        <div className="font-bold text-[2rem] font-inter">
+                            Products
+                        </div>
+                        <div>
+                            Browse our latest products and find something you'll love.
+                        </div>
+                    </div>
+                    <div className="flex gap-4">
+                        <button onClick={() => setFilter("")} className={`border-2 rounded-lg px-2 font-semibold ${filter === "" ? "bg-black text-white" : ""
+                            }`}>All</button>
+                        <button onClick={() => setFilter("Indoor Wood Plastic Composite")} className={`border-2 rounded-lg px-2 font-semibold ${filter === "Indoor Wood Plastic Composite" ? "bg-black text-white" : ""
+                            }`}>Indoor WPC</button>
+                        <button onClick={() => setFilter("Outdoor Wood Plastic Composite")} className={`border-2 rounded-lg px-2 font-semibold ${filter === "Outdoor Wood Plastic Composite" ? "bg-black text-white" : ""
+                            }`}>Outdoor WPC</button>
+                        <button onClick={() => setFilter("Indoor Columns Wood Plastic Composite")} className={`border-2 rounded-lg px-2 font-semibold ${filter === "Indoor Columns Wood Plastic Composite" ? "bg-black text-white" : ""
+                            }`}>WPC Columns</button>
+                        <button onClick={() => setFilter("Stone Plastic Composite")} className={`border-2 rounded-lg px-2 font-semibold ${filter === "Stone Plastic Composite" ? "bg-black text-white" : ""
+                            }`}>SPC Flooring</button>
                     </div>
                 </div>
+
                 <div className="w-[90%] mx-[auto] grid grid-cols-1 sm:grid-cols-5 gap-6 mb-[4rem]">
                     {products?.products?.map((product, index) => (
                         <Link key={index} href={`/shop/products/${product.product_id}`} passHref>
@@ -67,7 +82,7 @@ export default function Products() {
                                 <div className="w-[100%]">
                                     <div className="text-[1.1rem]">{product.name.length > 28 ? `${product.name.slice(0, 28)}...` : product.name}</div>
                                     <div className="text-main text-[1.2rem]"><span className="text-[1.3rem]">₱</span>{product.pricePerUnit}</div>
-                                    
+
                                 </div>
                             </div>
                         </Link>

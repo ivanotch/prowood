@@ -11,6 +11,7 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 import { useCartStore } from "@/stores/cartStores";
+import RoomSimulator from "../components/configurator/Configurator";
 
 export default function Home() {
 
@@ -282,6 +283,9 @@ export default function Home() {
                     </div>
                 </div>
 
+                <div>
+                    <RoomSimulator />
+                </div>
                 <div id="indoor-ad" className="relative mt-[1rem] min-h-[50vh] w-[95%] mx-[auto] mb-[3rem] rounded overflow-hidden bg-black">
                     <Image
                         src="/advertise.png"

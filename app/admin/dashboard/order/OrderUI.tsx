@@ -140,9 +140,9 @@ export default function OrderUi({ handleOrderAdded }: { handleOrderAdded: Handle
                         {step === 1 ?
                             <div className="flex flex-col gap-1 w-full md:w-[64%]">
                                 {/* Search Bar */}
-                                <div className="w-full p-1 border-2 rounded-md">
+                                {/* <div className="w-full p-1 border-2 rounded-md">
                                     Search Bar
-                                </div>
+                                </div> */}
 
                                 {/* Scrollable Browse Items */}
                                 <div className="w-full overflow-y-auto max-h-[60vh] md:pr-2">

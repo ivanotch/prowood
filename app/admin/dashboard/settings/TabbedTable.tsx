@@ -1,5 +1,3 @@
-'use client';
-
 import {
     Table,
     TableBody,
@@ -9,38 +7,19 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
-type Product = {
-    pricePerUnit: number;
-};
-
-type OrderItem = {
-    quantity: number;
-    product: Product;
-};
-
-type Order = {
-    order_id: string;
-    paymentStatus: string;
-    createdAt: string;
-    modeOfPayment: string;
-    customer: {
-        name: string;
-        email: string;
-    };
-    items: OrderItem[];
-};
-
-
-export default function DataTable() {
-    const [orders, setOrders] = useState<Order[]>([]);
+export default function TabbedTable() {
 
     useEffect(() => {
-        fetch('/api/admin/paidOrders')
-            .then(res => res.json())
-            .then(data => setOrders(data));
-    }, []);
+        const getUser = async () => {
+            try {
+
+            } catch (error) {
+
+            }
+        }
+    })
 
     return (
         <Table>
@@ -55,7 +34,7 @@ export default function DataTable() {
                 </TableRow>
             </TableHeader>
             <TableBody>
-                {orders.map((order) => {
+                {/* {orders.map((order) => {
                     const totalAmount = order.items?.reduce((sum, item) => {
                         return sum + item.quantity * item.product.pricePerUnit;
                     }, 0) ?? 0;
@@ -70,8 +49,8 @@ export default function DataTable() {
                             <TableCell className="text-right">₱{totalAmount.toFixed(2)}</TableCell>
                         </TableRow>
                     );
-                })}
+                })} */}
             </TableBody>
         </Table>
-    );
+    )
 }

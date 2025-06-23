@@ -9,6 +9,7 @@ const COOKIE_NAME = 'auth_token';
 export async function POST(req: Request) {
     const { email, password } = await req.json();
 
+    console.log("working")
     if (!email || !password) {
         return NextResponse.json({ message: "Email and Password are required." }, { status: 400 });
     }
