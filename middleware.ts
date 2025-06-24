@@ -1,41 +1,51 @@
-import { NextRequest, NextResponse } from 'next/server';
-import jwt from 'jsonwebtoken';
+import { NextRequest, NextResponse } from 'next/server'
+import { jwtVerify } from 'jose'
 
-const SECRET_KEY = process.env.JWT_SECRET || 'ivanpogi';
+const SECRET_KEY = new TextEncoder().encode(process.env.JWT_SECRET || 'ivanpogi')
 
-export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+async function verifyJWT(token: string) {
+  try {
+    const { payload } = await jwtVerify(token, SECRET_KEY)
+    return payload
+  } catch (err) {
+    return null
+  }
+}
 
-  const userToken = request.cookies.get('auth_token')?.value;
-  const adminToken = request.cookies.get('adminToken')?.value;
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl
+  const adminToken = request.cookies.get('adminToken')?.value
+  const userToken = request.cookies.get('auth_token')?.value
 
+  // Admin route protection
   if (pathname.startsWith('/admin/dashboard')) {
-    if (!adminToken) {
-      return NextResponse.redirect(new URL('/admin', request.url));
+    if (!adminToken) return NextResponse.redirect(new URL('/admin', request.url))
+
+    const payload = await verifyJWT(adminToken)
+    if (!payload || (payload.role !== 'admin' && payload.role !== 'SUPER_ADMIN')) {
+      return NextResponse.redirect(new URL('/admin', request.url))
     }
 
-    try {
-      jwt.verify(adminToken, SECRET_KEY);
-      return NextResponse.next();
-    } catch (err) {
-      return NextResponse.redirect(new URL('/admin/login', request.url));
-    }
+    return NextResponse.next()
   }
 
-  if (pathname.startsWith('/shop/checkout') || pathname.startsWith('/shop/cart') || pathname.startsWith('/shop/myAccount')) {
-    if (!userToken) {
-      return NextResponse.redirect(new URL('/login', request.url));
+  // User route protection
+  if (
+    pathname.startsWith('/shop/checkout') ||
+    pathname.startsWith('/shop/cart') ||
+    pathname.startsWith('/shop/myAccount')
+  ) {
+    if (!userToken) return NextResponse.redirect(new URL('/login', request.url))
+
+    const payload = await verifyJWT(userToken)
+    if (!payload) {
+      return NextResponse.redirect(new URL('/login', request.url))
     }
 
-    try {
-      jwt.verify(userToken, SECRET_KEY);
-      return NextResponse.next();
-    } catch (err) {
-      return NextResponse.redirect(new URL('/login', request.url));
-    }
+    return NextResponse.next()
   }
 
-  return NextResponse.next();
+  return NextResponse.next()
 }
 
 export const config = {
@@ -45,4 +55,4 @@ export const config = {
     '/shop/cart',
     '/shop/myAccount',
   ],
-};
+}

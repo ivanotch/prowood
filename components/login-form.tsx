@@ -37,7 +37,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
         const data = await res.json();
         setError(data.message || "Login Failed")
       } else {
-        window.location.href = "/admin/dashboard"
+        window.location.replace("/admin/dashboard");
       }
     } catch (err) {
       setError("Something went wrong. :( ")
@@ -45,7 +45,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
       setLoading(false)
     }
   }
- 
+
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
